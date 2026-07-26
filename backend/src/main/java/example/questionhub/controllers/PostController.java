@@ -13,17 +13,6 @@ import java.util.Optional;
 @RequestMapping("/posts")
 public class PostController {
 
-
-    //get -> tüm postlar
-    //post -> yeni Post create
-    //get /{postId} -> pathvariable Tek Post
-    //put /{postId} -> pathvariable Tek Post update
-    //delete /{postId} -> pathvariable Tek Post delete
-
-    //Belirli bir user'a ait postlar
-    // GET /posts?userId=3 -> burada request param kullanıcaz
-
-
     private final PostService postService;
 
     public PostController(PostService postService) {
