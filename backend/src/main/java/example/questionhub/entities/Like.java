@@ -12,7 +12,11 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "post_like")
+@Table(
+        name = "post_like",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_id", "post_id"})
+        })
 public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,7 +1,6 @@
 package example.questionhub.controllers;
 
 import example.questionhub.entities.User;
-import example.questionhub.repositories.UserRepository;
 import example.questionhub.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +23,8 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user) {
-        return userService.saveOneUser(user);
+    public User createOneUser(@RequestBody User user) {
+        return userService.createOneUser(user);
     }
 
     @GetMapping("/{userId}")
