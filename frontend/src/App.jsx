@@ -1,9 +1,19 @@
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import Home from "./pages/Home";
+import User from "./pages/User";
+import NavBar from "./components/NavBar";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
     <>
-      <div>Hello world</div>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/users/:userId" element={<User />} />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </>
   );
 }
