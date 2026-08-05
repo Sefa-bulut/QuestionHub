@@ -21,7 +21,6 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private User user;
 
     //Çift yönlü ilişki için

@@ -2,6 +2,7 @@ package example.questionhub.controllers;
 
 import example.questionhub.dto.request.CreatePostRequest;
 import example.questionhub.dto.request.UpdatePostRequest;
+import example.questionhub.dto.response.PostResponse;
 import example.questionhub.entities.Post;
 import example.questionhub.services.PostService;
 import org.springframework.web.bind.annotation.*;
@@ -20,22 +21,22 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> getAllPosts(@RequestParam Optional<Long> userId) {
+    public List<PostResponse> getAllPosts(@RequestParam Optional<Long> userId) {
         return postService.getAllPosts(userId);
     }
 
     @PostMapping
-    public Post createOnePost(@RequestBody CreatePostRequest createPostRequest) {
+    public PostResponse createOnePost(@RequestBody CreatePostRequest createPostRequest) {
         return postService.createOnePost(createPostRequest);
     }
 
     @GetMapping("/{postId}")
-    public Post getOnePost(@PathVariable Long postId) {
-        return postService.getOnePost(postId);
+    public PostResponse getOnePost(@PathVariable Long postId) {
+        return postService.getOnePostResponse(postId);
     }
 
     @PutMapping("/{postId}")
-    public Post updateOnePost(@PathVariable Long postId, @RequestBody UpdatePostRequest updatePostRequest) {
+    public PostResponse updateOnePost(@PathVariable Long postId, @RequestBody UpdatePostRequest updatePostRequest) {
         return postService.updateOnePost(postId, updatePostRequest);
     }
 
