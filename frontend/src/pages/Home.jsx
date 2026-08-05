@@ -1,6 +1,7 @@
 import Post from "@/components/Post/Post";
+import PostForm from "@/components/Post/PostForm";
 import api from "@/services/api";
-import { Container, Stack, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Button, Flex, Stack, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
 const Home = () => {
@@ -31,8 +32,11 @@ const Home = () => {
 
   return (
     <VStack w="100%" gap={8} align="stretch" p={6} bg="AccentColor">
+      <PostForm userId={2} userName={"Sefa"} setPostList={setPostList} />
       {postList?.map((post) => (
-        <Post key={post.id} mypost={post} />
+        <div key={post.postId}>
+          <Post mypost={post} />
+        </div>
       ))}
     </VStack>
   );
