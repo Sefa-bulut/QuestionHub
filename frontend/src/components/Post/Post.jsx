@@ -1,3 +1,4 @@
+import api from "@/services/api";
 import {
   Avatar,
   Button,
@@ -9,24 +10,55 @@ import {
   Stack,
   Flex,
   Icon,
+  VStack,
+  Separator,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { HiHeart } from "react-icons/hi";
 import { LuMessagesSquare } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
+import Comment from "../Comment/Comment";
+import CommentForm from "../Comment/CommentForm";
 
-const Post = ({ mypost }) => {
+const Post = ({ mypost, currentUserId, currentUserName }) => {
   const [open, setOpen] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [commentList, setCommentList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const handleLike = () => {
     setLiked(!liked);
   };
 
+  const getAllComments = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get(`/comments?postId=${mypost.postId}`);
+      setCommentList(response.data);
+      setDataLoaded(true);
+      console.log(response.data);
+    } catch (err) {
+      setError(err.message);
+      console.log(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleComments = () => {
+    setOpen(!open);
+
+    if (!dataLoaded) {
+      getAllComments();
+    }
+  };
+
   return (
     <div>
       <Card.Root w={{ base: "95%", lg: "50%" }} mx="auto">
-        <Collapsible.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
+        <Collapsible.Root open={open}>
           <Card.Body>
             <HStack mb="6" gap="3">
               <Link to={`/users/${mypost.userId}`}>
@@ -62,18 +94,32 @@ const Post = ({ mypost }) => {
                 <HiHeart />
               </Button>
 
-              <Collapsible.Trigger asChild>
-                <Button variant="ghost" size="lg">
-                  <LuMessagesSquare />
-                  Comments
-                </Button>
-              </Collapsible.Trigger>
+              <Button variant="ghost" size="lg" onClick={handleComments}>
+                <LuMessagesSquare />
+                Comments
+              </Button>
             </Flex>
           </Card.Footer>
 
           <Collapsible.Content>
             <Box p="4" borderTopWidth="1px">
-              This is the comments area.
+              <VStack align="stretch" gap={4}>
+                <CommentForm
+                  currentPost={mypost}
+                  currentUserId={currentUserId}
+                  currentUserName={currentUserName}
+                  setCommentList={setCommentList}
+                />
+                {loading && <Text>Loading...</Text>}
+                {error && <Text color="red.500">{error}</Text>}
+                {!loading &&
+                  commentList?.map((comment) => (
+                    <div key={comment.commentId}>
+                      <Comment comment={comment} />
+                      <Separator />
+                    </div>
+                  ))}
+              </VStack>
             </Box>
           </Collapsible.Content>
         </Collapsible.Root>

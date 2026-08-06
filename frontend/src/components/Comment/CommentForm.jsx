@@ -1,4 +1,4 @@
-import api from "@/services/api";
+import React, { useState } from "react";
 import {
   Avatar,
   Box,
@@ -6,58 +6,61 @@ import {
   Dialog,
   Field,
   Flex,
-  Input,
   Portal,
   Stack,
   Textarea,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import api from "@/services/api";
 import { toaster } from "../ui/toaster";
 
-const PostForm = ({ currentUserId, currentUserName, setPostList }) => {
-  const [title, setTitle] = useState("");
+const CommentForm = ({
+  currentUserId,
+  currentUserName,
+  currentPost,
+  setCommentList,
+}) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
 
-  const createPost = async () => {
-    // Yeni bir post nesnesi oluşturuyoruz
-    const newPost = { title, text, userId: currentUserId };
-    // Oluşturulan yeni post nesnesi ile API call yapıyoruz
-    const response = await api.post("/posts", newPost);
+  const createComment = async () => {
+    // Yeni bir comment nesnesi oluşturuyoruz
+    const newComment = {
+      postId: currentPost.postId,
+      userId: currentUserId,
+      text,
+    };
+    // Oluşturulan yeni comment nesnesi ile API call yapıyoruz
+    const response = await api.post("/comments", newComment);
     return response.data;
   };
 
   const handleSubmit = async () => {
     try {
-      const post = await createPost();
-      //gelen post ile setPostlist'i güncelliyoruz ve Sayfa yeniden render oluyor
-      setPostList((prev) => [post, ...prev]);
-
-      setTitle("");
+      const comment = await createComment();
+      //gelen comment ile setCommentlist'i güncelliyoruz ve Sayfa yeniden render oluyor
+      setCommentList((prev) => [comment, ...prev]);
       setText("");
       setOpen(false); // Modal penceresini kapatıyoruz
 
       toaster.create({
         title: "Başarılı",
-        description: "Başlık başarıyla oluşturuldu.",
+        description: "Yorum başarıyla oluşturuldu.",
         type: "success",
       });
     } catch (error) {
       toaster.create({
         title: "Hata",
-        description: "Başlık oluşturulamadı.",
+        description: "Yorum oluşturulamadı.",
         type: "error",
       });
       console.log(error);
     }
   };
-
   return (
     <div>
       <Box
-        w={{ base: "95%", lg: "50%" }}
         mx="auto"
-        p={4}
+        p={3}
         border="1px solid"
         borderColor="gray.300"
         borderRadius="xl"
@@ -84,7 +87,7 @@ const PostForm = ({ currentUserId, currentUserName, setPostList }) => {
                 bg="white"
                 _hover={{ bg: "gray.200" }}
               >
-                Post oluşturun...
+                Yorum oluşturun...
               </Button>
             </Dialog.Trigger>
           </Flex>
@@ -95,20 +98,11 @@ const PostForm = ({ currentUserId, currentUserName, setPostList }) => {
             <Dialog.Positioner>
               <Dialog.Content w={{ base: "80%", lg: "100%" }}>
                 <Dialog.Header>
-                  <Dialog.Title>Post Oluşturma</Dialog.Title>
+                  <Dialog.Title>Yorum Oluşturma</Dialog.Title>
                 </Dialog.Header>
 
                 <Dialog.Body>
                   <Stack gap={4}>
-                    <Field.Root>
-                      <Field.Label>Başlık</Field.Label>
-                      <Input
-                        maxLength={50}
-                        placeholder="Başlık giriniz"
-                        onChange={(e) => setTitle(e.target.value)}
-                      />
-                    </Field.Root>
-
                     <Field.Root>
                       <Field.Label>İçerik</Field.Label>
                       <Textarea
@@ -138,4 +132,4 @@ const PostForm = ({ currentUserId, currentUserName, setPostList }) => {
   );
 };
 
-export default PostForm;
+export default CommentForm;

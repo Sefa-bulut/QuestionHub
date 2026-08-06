@@ -32,10 +32,14 @@ const Home = () => {
 
   return (
     <VStack w="100%" gap={8} align="stretch" p={6} bg="AccentColor">
-      <PostForm userId={2} userName={"Sefa"} setPostList={setPostList} />
+      <PostForm
+        currentUserId={2}
+        currentUserName={"Sefa"}
+        setPostList={setPostList}
+      />
       {postList?.map((post) => (
         <div key={post.postId}>
-          <Post mypost={post} />
+          <Post mypost={post} currentUserId={2} currentUserName={"Sefa"} />
         </div>
       ))}
     </VStack>
