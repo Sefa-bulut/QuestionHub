@@ -2,6 +2,7 @@ package example.questionhub.controllers;
 
 import example.questionhub.dto.request.CreateCommentRequest;
 import example.questionhub.dto.request.UpdateCommentRequest;
+import example.questionhub.dto.response.CommentResponse;
 import example.questionhub.entities.Comment;
 import example.questionhub.services.CommentService;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +21,13 @@ public class CommentController {
     }
 
     @GetMapping
-    public List<Comment> getAllComments(@RequestParam Optional<Long> userId,
-                                        @RequestParam Optional<Long> postId) {
+    public List<CommentResponse> getAllComments(@RequestParam Optional<Long> userId,
+                                                @RequestParam Optional<Long> postId) {
         return commentService.getAllComments(userId, postId);
     }
 
     @PostMapping
-    public Comment createOneComment(@RequestBody CreateCommentRequest createCommentRequest) {
+    public CommentResponse createOneComment(@RequestBody CreateCommentRequest createCommentRequest) {
         return commentService.createOneComment(createCommentRequest);
     }
 

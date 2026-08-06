@@ -2,6 +2,7 @@ package example.questionhub.services;
 
 import example.questionhub.dto.request.CreateCommentRequest;
 import example.questionhub.dto.request.UpdateCommentRequest;
+import example.questionhub.dto.response.CommentResponse;
 import example.questionhub.entities.Comment;
 import example.questionhub.entities.Post;
 import example.questionhub.entities.User;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -23,23 +25,26 @@ public class CommentService {
         this.postService = postService;
     }
 
-    public List<Comment> getAllComments(Optional<Long> userId, Optional<Long> postId) {
+    public List<CommentResponse> getAllComments(Optional<Long> userId, Optional<Long> postId) {
+        List<Comment> comments;
         if (userId.isPresent() && postId.isPresent()) {
-            return commentRepository.findByUserIdAndPostId(userId.get(), postId.get());
+            comments = commentRepository.findByUserIdAndPostId(userId.get(), postId.get());
         } else if (userId.isPresent()) {
-            return commentRepository.findByUserId(userId.get());
+            comments = commentRepository.findByUserId(userId.get());
         } else if (postId.isPresent()) {
-            return commentRepository.findByPostId(postId.get());
+            comments = commentRepository.findByPostId(postId.get());
         } else {
-            return commentRepository.findAll();
+            comments = commentRepository.findAll();
         }
+        // use mapper to transform comment to commentResponse
+        return comments.stream().map(c -> new CommentResponse(c)).collect(Collectors.toList());
     }
 
     public Comment getOneComment(Long commentId) {
         return commentRepository.findById(commentId).orElse(null);
     }
 
-    public Comment createOneComment(CreateCommentRequest createCommentRequest) {
+    public CommentResponse createOneComment(CreateCommentRequest createCommentRequest) {
         User currentUser = userService.getOneUser(createCommentRequest.getUserId());
         Post currentPost = postService.getOnePost(createCommentRequest.getPostId());
         if (currentUser != null && currentPost != null) {
@@ -47,7 +52,7 @@ public class CommentService {
             comment.setText(createCommentRequest.getText());
             comment.setUser(currentUser);
             comment.setPost(currentPost);
-            return commentRepository.save(comment);
+            return new CommentResponse(commentRepository.save(comment));
         } else {
             return null;
         }
