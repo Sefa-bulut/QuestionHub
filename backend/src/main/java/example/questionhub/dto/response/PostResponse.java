@@ -12,12 +12,14 @@ public class PostResponse {
     private String text;
     private Long userId;
     private String userName;
+    private long likeCount;
 
-    public PostResponse(Post post) {
+    public PostResponse(Post post, long likeCount) {
         this.postId = post.getId();
         this.title = post.getTitle();
         this.text = post.getText();
         this.userId = post.getUser().getId();
         this.userName = post.getUser().getUserName();
+        this.likeCount = likeCount;
     }
 }

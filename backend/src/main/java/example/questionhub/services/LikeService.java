@@ -1,6 +1,7 @@
 package example.questionhub.services;
 
 import example.questionhub.dto.request.CreateLikeRequest;
+import example.questionhub.dto.response.LikeResponse;
 import example.questionhub.entities.Like;
 import example.questionhub.entities.Post;
 import example.questionhub.entities.User;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class LikeService {
@@ -23,23 +25,25 @@ public class LikeService {
         this.postService = postService;
     }
 
-    public List<Like> getAllLikes(Optional<Long> userId, Optional<Long> postId) {
+    public List<LikeResponse> getAllLikes(Optional<Long> userId, Optional<Long> postId) {
+        List<Like> list;
         if (userId.isPresent() && postId.isPresent()) {
-            return likeRepository.findByUserIdAndPostId(userId.get(), postId.get());
+            list = likeRepository.findByUserIdAndPostId(userId.get(), postId.get());
         } else if (userId.isPresent()) {
-            return likeRepository.findByUserId(userId.get());
+            list = likeRepository.findByUserId(userId.get());
         } else if (postId.isPresent()) {
-            return likeRepository.findByPostId(postId.get());
+            list = likeRepository.findByPostId(postId.get());
         } else {
-            return likeRepository.findAll();
+            list = likeRepository.findAll();
         }
+        return list.stream().map(like -> new LikeResponse(like)).collect(Collectors.toList());
     }
 
     public Like getOneLike(Long likeId) {
         return likeRepository.findById(likeId).orElse(null);
     }
 
-    public Like createOneLike(CreateLikeRequest createLikeRequest) {
+    public LikeResponse createOneLike(CreateLikeRequest createLikeRequest) {
         User currentUser = userService.getOneUser(createLikeRequest.getUserId());
         Post currentPost = postService.getOnePost(createLikeRequest.getPostId());
         if (currentUser != null && currentPost != null) {
@@ -47,7 +51,7 @@ public class LikeService {
             like.setUser(currentUser);
             like.setPost(currentPost);
             try {
-                return likeRepository.save(like);
+                return new LikeResponse(likeRepository.save(like));
             } catch (DataIntegrityViolationException ex) {
                 //throw DuplicateLikeException
                 System.out.println("Mevcut kullanıcı bu posta zaten beğeni yaptı!");

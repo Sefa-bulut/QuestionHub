@@ -1,6 +1,7 @@
 package example.questionhub.controllers;
 
 import example.questionhub.dto.request.CreateLikeRequest;
+import example.questionhub.dto.response.LikeResponse;
 import example.questionhub.entities.Like;
 import example.questionhub.services.LikeService;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,13 @@ public class LikeController {
     }
 
     @GetMapping
-    public List<Like> getAllLikes(@RequestParam Optional<Long> userId,
-                                  @RequestParam Optional<Long> postId) {
+    public List<LikeResponse> getAllLikes(@RequestParam Optional<Long> userId,
+                                          @RequestParam Optional<Long> postId) {
         return likeService.getAllLikes(userId, postId);
     }
 
     @PostMapping
-    public Like createOneLike(@RequestBody CreateLikeRequest createLikeRequest) {
+    public LikeResponse createOneLike(@RequestBody CreateLikeRequest createLikeRequest) {
         return likeService.createOneLike(createLikeRequest);
     }
 
