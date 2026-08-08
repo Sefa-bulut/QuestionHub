@@ -13,23 +13,69 @@ import {
   VStack,
   Separator,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiHeart } from "react-icons/hi";
 import { LuMessagesSquare } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
 import Comment from "../Comment/Comment";
 import CommentForm from "../Comment/CommentForm";
 
-const Post = ({ mypost, currentUserId, currentUserName }) => {
+const Post = ({ mypost, currentUser, isLiked, likedId, setLikedPosts }) => {
   const [open, setOpen] = useState(false);
-  const [liked, setLiked] = useState(false);
   const [commentList, setCommentList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [dataLoaded, setDataLoaded] = useState(false);
+  const [likeCount, setLikeCount] = useState(mypost.likeCount || 0);
+  const [likeLock, setLikeLock] = useState(false);
 
-  const handleLike = () => {
-    setLiked(!liked);
+  useEffect(() => {
+    setLikeCount(mypost.likeCount || 0);
+  }, [mypost.likeCount]);
+
+  const handleLike = async () => {
+    if (likeLock) return;
+
+    setLikeLock(true); //İşlemi başlatıp kilidi alıyoruz
+
+    if (isLiked) {
+      // Post Beğenilmişse: Beğeniyi Sil (DELETE)
+      try {
+        await api.delete(`/likes/${likedId}`);
+
+        setLikedPosts((prevMap) => {
+          const newMap = new Map(prevMap);
+          newMap.delete(mypost.postId);
+          return newMap;
+        });
+
+        setLikeCount((prev) => prev - 1);
+      } catch (err) {
+        console.log("Beğeni silinirken bir hata oluştu", err);
+      } finally {
+        setLikeLock(false); // kilidi salıyoruz
+      }
+    } else {
+      // Post Beğenilmemişse: Beğeni Ekle (POST)
+      try {
+        const response = await api.post(`/likes`, {
+          userId: currentUser.id,
+          postId: mypost.postId,
+        });
+
+        setLikedPosts((prevMap) => {
+          const newMap = new Map(prevMap);
+          newMap.set(mypost.postId, response.data.likeId);
+          return newMap;
+        });
+
+        setLikeCount((prev) => prev + 1);
+      } catch (err) {
+        console.log("Beğeni oluşturulurken bir hata oluştu", err);
+      } finally {
+        setLikeLock(false); // kilidi salıyoruz
+      }
+    }
   };
 
   const getAllComments = async () => {
@@ -87,10 +133,10 @@ const Post = ({ mypost, currentUserId, currentUserName }) => {
                 variant="ghost"
                 size="2xl"
                 justifyContent="flex-start"
-                color={liked ? "red.500" : "gray.500"}
+                color={isLiked ? "red.600" : "gray.500"}
                 onClick={handleLike}
               >
-                123
+                {likeCount}
                 <HiHeart />
               </Button>
 
@@ -104,12 +150,6 @@ const Post = ({ mypost, currentUserId, currentUserName }) => {
           <Collapsible.Content>
             <Box p="4" borderTopWidth="1px">
               <VStack align="stretch" gap={4}>
-                <CommentForm
-                  currentPost={mypost}
-                  currentUserId={currentUserId}
-                  currentUserName={currentUserName}
-                  setCommentList={setCommentList}
-                />
                 {loading && <Text>Loading...</Text>}
                 {error && <Text color="red.500">{error}</Text>}
                 {!loading &&
@@ -119,6 +159,11 @@ const Post = ({ mypost, currentUserId, currentUserName }) => {
                       <Separator />
                     </div>
                   ))}
+                <CommentForm
+                  currentPost={mypost}
+                  currentUser={currentUser}
+                  setCommentList={setCommentList}
+                />
               </VStack>
             </Box>
           </Collapsible.Content>

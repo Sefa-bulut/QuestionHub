@@ -13,12 +13,7 @@ import {
 import api from "@/services/api";
 import { toaster } from "../ui/toaster";
 
-const CommentForm = ({
-  currentUserId,
-  currentUserName,
-  currentPost,
-  setCommentList,
-}) => {
+const CommentForm = ({ currentUser, currentPost, setCommentList }) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
 
@@ -26,7 +21,7 @@ const CommentForm = ({
     // Yeni bir comment nesnesi oluşturuyoruz
     const newComment = {
       postId: currentPost.postId,
-      userId: currentUserId,
+      userId: currentUser.id,
       text,
     };
     // Oluşturulan yeni comment nesnesi ile API call yapıyoruz
@@ -72,7 +67,7 @@ const CommentForm = ({
         >
           <Flex align="center" gap={4}>
             <Avatar.Root>
-              <Avatar.Fallback name={currentUserName} />
+              <Avatar.Fallback name={currentUser.userName} />
             </Avatar.Root>
 
             <Dialog.Trigger asChild>

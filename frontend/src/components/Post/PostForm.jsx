@@ -14,14 +14,14 @@ import {
 import React, { useState } from "react";
 import { toaster } from "../ui/toaster";
 
-const PostForm = ({ currentUserId, currentUserName, setPostList }) => {
+const PostForm = ({ currentUser, setPostList }) => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
 
   const createPost = async () => {
     // Yeni bir post nesnesi oluşturuyoruz
-    const newPost = { title, text, userId: currentUserId };
+    const newPost = { title, text, userId: currentUser.id };
     // Oluşturulan yeni post nesnesi ile API call yapıyoruz
     const response = await api.post("/posts", newPost);
     return response.data;
@@ -69,7 +69,7 @@ const PostForm = ({ currentUserId, currentUserName, setPostList }) => {
         >
           <Flex align="center" gap={4}>
             <Avatar.Root>
-              <Avatar.Fallback name={currentUserName} />
+              <Avatar.Fallback name={currentUser.userName} />
             </Avatar.Root>
 
             <Dialog.Trigger asChild>
