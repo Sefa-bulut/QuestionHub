@@ -3,6 +3,7 @@ package example.questionhub.security.config;
 import example.questionhub.security.filter.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -46,6 +47,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Login/Register herkese açık
                         .requestMatchers("/auth/**","/error").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/posts/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/comments/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/likes/**").permitAll()
                         // Diğer bütün endpointler authentication istiyor
                         .anyRequest().authenticated()
                 )
