@@ -69,7 +69,7 @@ const Home = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <VStack w="100%" gap={8} align="stretch" p={6} bg="AccentColor">
+    <VStack w="100%" gap={8} align="stretch" p={6}>
       <PostForm currentUser={currentUser} setPostList={setPostList} />
       {postList?.map((post) => (
         <div key={post.postId}>

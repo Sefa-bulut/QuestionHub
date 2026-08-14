@@ -5,17 +5,24 @@ import User from "./pages/User";
 import NavBar from "./components/NavBar";
 import NotFoundPage from "./pages/NotFoundPage";
 import { Toaster } from "./components/ui/toaster";
+import Login from "./pages/Auth/Login";
+import Register from "./pages/Auth/Register";
+import { Box } from "@chakra-ui/react";
 
 function App() {
   return (
     <>
       <NavBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/users/:userId" element={<User />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-      <Toaster />
+      <Box bg="AccentColor" minH="100vh">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/users/:userId" element={<User />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+        <Toaster />
+      </Box>
     </>
   );
 }
