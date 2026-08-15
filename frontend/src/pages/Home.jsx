@@ -1,15 +1,12 @@
 import Post from "@/components/Post/Post";
 import PostForm from "@/components/Post/PostForm";
+import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
-import { Avatar, Box, Button, Flex, Stack, VStack } from "@chakra-ui/react";
+import { VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
-const currentUser = {
-  id: 1,
-  userName: "Sefa",
-};
-
 const Home = () => {
+  const { user, isAuthenticated } = useAuth();
   const [postList, setPostList] = useState([]); // array
   const [loading, setLoading] = useState(true); // boolean
   const [error, setError] = useState(null); // obje
@@ -44,7 +41,7 @@ const Home = () => {
    */
   const getLikes = async () => {
     try {
-      const response = await api.get(`/likes?userId=${currentUser.id}`);
+      const response = await api.get(`/likes?userId=${user.userId}`);
 
       const map = new Map(
         response.data.map((like) => [like.postId, like.likeId]),
@@ -70,12 +67,15 @@ const Home = () => {
 
   return (
     <VStack w="100%" gap={8} align="stretch" p={6}>
-      <PostForm currentUser={currentUser} setPostList={setPostList} />
+      {isAuthenticated ? (
+        <PostForm currentUser={user} setPostList={setPostList} />
+      ) : null}
+
       {postList?.map((post) => (
         <div key={post.postId}>
           <Post
             mypost={post}
-            currentUser={currentUser}
+            currentUser={user}
             isLiked={likedPosts.has(post.postId)}
             likedId={likedPosts.get(post.postId)} // Silme işlemi için likeId gerekli
             setLikedPosts={setLikedPosts} // Post tarafından listeyi güncelleyebilmek için gerekli

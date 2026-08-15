@@ -19,6 +19,8 @@ import { LuMessagesSquare } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
 import Comment from "../Comment/Comment";
 import CommentForm from "../Comment/CommentForm";
+import { useAuth } from "@/contexts/AuthContext";
+import { toaster } from "../ui/toaster";
 
 const Post = ({ mypost, currentUser, isLiked, likedId, setLikedPosts }) => {
   const [open, setOpen] = useState(false);
@@ -28,12 +30,22 @@ const Post = ({ mypost, currentUser, isLiked, likedId, setLikedPosts }) => {
   const [dataLoaded, setDataLoaded] = useState(false);
   const [likeCount, setLikeCount] = useState(mypost.likeCount || 0);
   const [likeLock, setLikeLock] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     setLikeCount(mypost.likeCount || 0);
   }, [mypost.likeCount]);
 
   const handleLike = async () => {
+    // 1. MISAFİR KULLANICI KONTROLÜ
+    if (!isAuthenticated) {
+      toaster.create({
+        title: "Giriş Yapmalısınız",
+        description: "Gönderileri beğenmek için lütfen oturum açın.",
+        type: "warning",
+      });
+      return;
+    }
     if (likeLock) return;
 
     setLikeLock(true); //İşlemi başlatıp kilidi alıyoruz
@@ -59,7 +71,7 @@ const Post = ({ mypost, currentUser, isLiked, likedId, setLikedPosts }) => {
       // Post Beğenilmemişse: Beğeni Ekle (POST)
       try {
         const response = await api.post(`/likes`, {
-          userId: currentUser.id,
+          userId: currentUser.userId,
           postId: mypost.postId,
         });
 
@@ -159,11 +171,14 @@ const Post = ({ mypost, currentUser, isLiked, likedId, setLikedPosts }) => {
                       <Separator />
                     </div>
                   ))}
-                <CommentForm
-                  currentPost={mypost}
-                  currentUser={currentUser}
-                  setCommentList={setCommentList}
-                />
+
+                {isAuthenticated ? (
+                  <CommentForm
+                    currentPost={mypost}
+                    currentUser={currentUser}
+                    setCommentList={setCommentList}
+                  />
+                ) : null}
               </VStack>
             </Box>
           </Collapsible.Content>

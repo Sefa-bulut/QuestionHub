@@ -21,7 +21,7 @@ const PostForm = ({ currentUser, setPostList }) => {
 
   const createPost = async () => {
     // Yeni bir post nesnesi oluşturuyoruz
-    const newPost = { title, text, userId: currentUser.id };
+    const newPost = { title, text, userId: currentUser.userId };
     // Oluşturulan yeni post nesnesi ile API call yapıyoruz
     const response = await api.post("/posts", newPost);
     return response.data;

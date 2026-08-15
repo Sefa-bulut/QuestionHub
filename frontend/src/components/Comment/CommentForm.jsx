@@ -21,7 +21,7 @@ const CommentForm = ({ currentUser, currentPost, setCommentList }) => {
     // Yeni bir comment nesnesi oluşturuyoruz
     const newComment = {
       postId: currentPost.postId,
-      userId: currentUser.id,
+      userId: currentUser.userId,
       text,
     };
     // Oluşturulan yeni comment nesnesi ile API call yapıyoruz
