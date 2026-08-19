@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { toaster } from "../ui/toaster";
+import UserAvatar from "../Profile/UserAvatar";
 
 const PostForm = ({ currentUser, setPostList }) => {
   const [title, setTitle] = useState("");
@@ -68,9 +69,11 @@ const PostForm = ({ currentUser, setPostList }) => {
           onOpenChange={(detail) => setOpen(detail.open)}
         >
           <Flex align="center" gap={4}>
-            <Avatar.Root>
-              <Avatar.Fallback name={currentUser.userName} />
-            </Avatar.Root>
+            <UserAvatar
+              userName={currentUser.userName}
+              avatarId={currentUser.avatarId}
+              size="lg"
+            />
 
             <Dialog.Trigger asChild>
               <Button

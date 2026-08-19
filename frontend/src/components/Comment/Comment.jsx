@@ -9,6 +9,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import UserAvatar from "../Profile/UserAvatar";
 
 const Comment = ({ comment }) => {
   return (
@@ -16,10 +17,11 @@ const Comment = ({ comment }) => {
       <Box py={3}>
         <HStack align="start" gap={3}>
           <Link to={`/users/${comment.userId}`}>
-            <Avatar.Root size="sm">
-              <Avatar.Image src="https://images.unsplash.com/photo-1511806754518-53bada35f930" />
-              <Avatar.Fallback name={comment.userName} />
-            </Avatar.Root>
+            <UserAvatar
+              userName={comment.userName}
+              avatarId={comment.avatarId}
+              size="sm"
+            />
           </Link>
 
           <Box>

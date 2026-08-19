@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import api from "@/services/api";
 import { toaster } from "../ui/toaster";
+import UserAvatar from "../Profile/UserAvatar";
 
 const CommentForm = ({ currentUser, currentPost, setCommentList }) => {
   const [text, setText] = useState("");
@@ -66,9 +67,11 @@ const CommentForm = ({ currentUser, currentPost, setCommentList }) => {
           onOpenChange={(detail) => setOpen(detail.open)}
         >
           <Flex align="center" gap={4}>
-            <Avatar.Root>
-              <Avatar.Fallback name={currentUser.userName} />
-            </Avatar.Root>
+            <UserAvatar
+              userName={currentUser.userName}
+              avatarId={currentUser.avatarId}
+              size="lg"
+            />
 
             <Dialog.Trigger asChild>
               <Button

@@ -21,6 +21,7 @@ import Comment from "../Comment/Comment";
 import CommentForm from "../Comment/CommentForm";
 import { useAuth } from "@/contexts/AuthContext";
 import { toaster } from "../ui/toaster";
+import UserAvatar from "../Profile/UserAvatar";
 
 const Post = ({ mypost, currentUser, isLiked, likedId, setLikedPosts }) => {
   const [open, setOpen] = useState(false);
@@ -120,12 +121,11 @@ const Post = ({ mypost, currentUser, isLiked, likedId, setLikedPosts }) => {
           <Card.Body>
             <HStack mb="6" gap="3">
               <Link to={`/users/${mypost.userId}`}>
-                <Avatar.Root>
-                  {/*Asıl resim*/}
-                  <Avatar.Image src="https://images.unsplash.com/photo-1511806754518-53bada35f930" />
-                  {/*Resim yüklemezse fallback(yedek)'deki ismin baş harfleri gösterilir*/}
-                  <Avatar.Fallback name={mypost.userName} />
-                </Avatar.Root>
+                <UserAvatar
+                  userName={mypost.userName}
+                  avatarId={mypost.avatarId}
+                  size="xl"
+                />
               </Link>
 
               <Stack gap="0">
