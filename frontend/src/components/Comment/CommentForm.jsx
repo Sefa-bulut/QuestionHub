@@ -13,16 +13,18 @@ import {
 import api from "@/services/api";
 import { toaster } from "../ui/toaster";
 import UserAvatar from "../Profile/UserAvatar";
+import { useAuth } from "@/contexts/AuthContext";
 
-const CommentForm = ({ currentUser, currentPost, setCommentList }) => {
+const CommentForm = ({ currentPost, setCommentList }) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
+  const { user } = useAuth();
 
   const createComment = async () => {
     // Yeni bir comment nesnesi oluşturuyoruz
     const newComment = {
       postId: currentPost.postId,
-      userId: currentUser.userId,
+      userId: user.userId,
       text,
     };
     // Oluşturulan yeni comment nesnesi ile API call yapıyoruz
@@ -68,8 +70,8 @@ const CommentForm = ({ currentUser, currentPost, setCommentList }) => {
         >
           <Flex align="center" gap={4}>
             <UserAvatar
-              userName={currentUser.userName}
-              avatarId={currentUser.avatarId}
+              userName={user.userName}
+              avatarId={user.avatarId}
               size="lg"
             />
 

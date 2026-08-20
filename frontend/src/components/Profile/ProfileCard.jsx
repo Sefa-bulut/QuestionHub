@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AvatarSelectorDialog from "./AvatarSelectorDialog";
-import { Badge, Box, Card, HStack, Image } from "@chakra-ui/react";
+import { Badge, Box, Card, HStack, Image, VStack } from "@chakra-ui/react";
 import { avatars } from "@/assets/avatarImages/avatars";
+import AboutEditDialog from "./AboutEditDialog";
+import { useAuth } from "@/contexts/AuthContext";
 
-const ProfileCard = ({ currentUser }) => {
-  const [selectedAvatar, setSelectedAvatar] = useState(currentUser.avatarId);
+const ProfileCard = ({ paramUser }) => {
+  const [selectedAvatar, setSelectedAvatar] = useState(paramUser.avatarId);
+  const [about, setAbout] = useState(paramUser.about);
   const currentAvatar = avatars.find((avatar) => avatar.id === selectedAvatar);
-  const firstLetter = currentUser.userName?.charAt(0).toUpperCase();
+  const firstLetter = paramUser.userName?.charAt(0).toUpperCase();
+  const { user, isAuthenticated } = useAuth();
+  const isOwner = paramUser?.id === user?.userId;
+
+  useEffect(() => {
+    setSelectedAvatar(paramUser.avatarId);
+    setAbout(paramUser.about);
+  }, [paramUser]);
+
   return (
     <Card.Root
       flexDirection={{ base: "column", md: "row" }} // Mobil: Alt alta, Web: Yan yana
@@ -54,21 +65,31 @@ const ProfileCard = ({ currentUser }) => {
       {/* SAĞ/ALT KISIM: Bilgi Alanı */}
       <Box w={{ base: "100%", md: "60%" }} minW={0}>
         <Card.Body wordBreak="break-word">
-          <Card.Title mb="2">{currentUser.userName}</Card.Title>
-          <Card.Description>{currentUser.about}</Card.Description>
+          <Card.Title mb="2">{paramUser.userName}</Card.Title>
+          <Card.Description>{about}</Card.Description>
 
           <HStack mt="4" flexWrap="wrap" gap={2}>
             <Badge>24 Posts</Badge>
-            <Badge>120 Followers</Badge>
+            <Badge>120 Likes</Badge>
           </HStack>
         </Card.Body>
 
-        <Card.Footer>
-          <AvatarSelectorDialog
-            selectedAvatar={selectedAvatar}
-            setSelectedAvatar={setSelectedAvatar}
-          />
-        </Card.Footer>
+        {isOwner && (
+          <Card.Footer>
+            <HStack gap={3} wrap="wrap" w="100%">
+              <AvatarSelectorDialog
+                selectedAvatar={selectedAvatar}
+                setSelectedAvatar={setSelectedAvatar}
+                paramUser={paramUser}
+              />
+              <AboutEditDialog
+                paramUser={paramUser}
+                setAbout={setAbout}
+                about={about}
+              />
+            </HStack>
+          </Card.Footer>
+        )}
       </Box>
     </Card.Root>
   );

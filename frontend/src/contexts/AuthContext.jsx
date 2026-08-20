@@ -13,12 +13,14 @@ export const AuthProvider = ({ children }) => {
   // 2. Login fonksiyonumuz artık doğrudan backend'den dönen AuthResponse objesini (data) alacak
   const login = (authResponseData) => {
     // Backend'den gelen DTO alanlarını parçalıyoruz (Destructuring)
-    const { accessToken, userId, userName } = authResponseData;
+    const { accessToken, userId, avatarId, userName, about } = authResponseData;
 
     // Kullanıcı bilgilerini frontend'de kullanmak üzere bir objede topluyoruz
     const userData = {
       userId: userId,
+      avatarId: avatarId,
       userName: userName,
+      about: about,
     };
 
     // Verileri tarayıcı hafızasına (localStorage) kaydediyoruz
@@ -38,6 +40,15 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  //User ile ilgili bir güncelleme sonrası uygulamayı senkronize tutan fonksiyon
+  const updateUser = (updatedFields) => {
+    if (!user) return;
+
+    const updatedUser = { ...user, ...updatedFields };
+    setUser(updatedUser);
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -46,6 +57,7 @@ export const AuthProvider = ({ children }) => {
         login,
         logout,
         isAuthenticated: !!token, // Token varsa true, yoksa false döner
+        updateUser,
       }}
     >
       {children}

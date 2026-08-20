@@ -1,6 +1,5 @@
 import api from "@/services/api";
 import {
-  Avatar,
   Button,
   Card,
   HStack,
@@ -9,7 +8,6 @@ import {
   Collapsible,
   Stack,
   Flex,
-  Icon,
   VStack,
   Separator,
 } from "@chakra-ui/react";
@@ -42,7 +40,7 @@ const Post = ({ mypost, currentUser, isLiked, likedId, setLikedPosts }) => {
     if (!isAuthenticated) {
       toaster.create({
         title: "Giriş Yapmalısınız",
-        description: "Gönderileri beğenmek için lütfen oturum açın.",
+        description: "Gönderileri beğenmek için lütfen giriş yapın.",
         type: "warning",
       });
       return;
@@ -175,7 +173,6 @@ const Post = ({ mypost, currentUser, isLiked, likedId, setLikedPosts }) => {
                 {isAuthenticated ? (
                   <CommentForm
                     currentPost={mypost}
-                    currentUser={currentUser}
                     setCommentList={setCommentList}
                   />
                 ) : null}

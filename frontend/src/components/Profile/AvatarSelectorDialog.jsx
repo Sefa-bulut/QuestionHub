@@ -1,13 +1,49 @@
 import { Avatar, Button, Dialog, Grid, RadioCard } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { avatars } from "../../assets/avatarImages/avatars";
+import api from "@/services/api";
+import { toaster } from "../ui/toaster";
+import { useAuth } from "@/contexts/AuthContext";
 
-const AvatarSelectorDialog = ({ selectedAvatar, setSelectedAvatar }) => {
-  console.log(selectedAvatar);
+const AvatarSelectorDialog = ({
+  selectedAvatar,
+  setSelectedAvatar,
+  paramUser,
+}) => {
+  // AuthContext'ten updateUser fonksiyonunu alıyoruz
+  const { updateUser } = useAuth();
+
+  const updateProfile = async () => {
+    const newUserProfile = { avatarId: selectedAvatar, about: paramUser.about };
+    const response = await api.put(`/users/${paramUser.id}`, newUserProfile);
+    return response.data;
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const user = await updateProfile();
+
+      updateUser({ avatarId: selectedAvatar });
+
+      toaster.create({
+        title: "Başarılı",
+        description: "Avatar değiştirildi.",
+        type: "success",
+      });
+    } catch (error) {
+      toaster.create({
+        title: "Hata",
+        description: "Bir hata oluştu!",
+        type: "error",
+      });
+      console.log(error);
+    }
+  };
+
   return (
     <Dialog.Root placement="center">
       <Dialog.Trigger asChild>
-        <Button>Avatar Değiştir</Button>
+        <Button size="xs">Avatar Değiştir</Button>
       </Dialog.Trigger>
 
       <Dialog.Backdrop />
@@ -69,7 +105,9 @@ const AvatarSelectorDialog = ({ selectedAvatar, setSelectedAvatar }) => {
             </Dialog.ActionTrigger>
 
             <Dialog.ActionTrigger asChild>
-              <Button colorScheme="blue">Kaydet</Button>
+              <Button colorScheme="blue" onClick={handleUpdate}>
+                Kaydet
+              </Button>
             </Dialog.ActionTrigger>
           </Dialog.Footer>
 

@@ -6,12 +6,13 @@ import { useParams } from "react-router-dom";
 
 const User = () => {
   const { userId } = useParams();
-  const [currentUser, setCurrentUser] = useState(null);
+  const [paramUser, setParamUser] = useState(null);
+  console.log(paramUser);
 
   const getOneUser = async () => {
     try {
       const response = await api.get(`/users/${userId}`);
-      setCurrentUser(response.data);
+      setParamUser(response.data);
     } catch (err) {
       console.log(err.message);
     }
@@ -30,14 +31,14 @@ const User = () => {
       p={5}
       templateColumns={{
         base: "1fr",
-        md: "1fr 1fr", // Webde 2 sütun (sol profil kartı, sağ diğer içerikler)
+        md: "2fr 3fr", // Webde 2 sütun (sol profil kartı, sağ diğer içerikler)
       }}
       gap={8}
       alignItems="start"
       overflowX="hidden"
     >
       <Box w="100%" minW={0}>
-        {currentUser && <ProfileCard currentUser={currentUser} />}
+        {paramUser && <ProfileCard paramUser={paramUser} />}
       </Box>
 
       <Box minW={0} w="100%" wordBreak="break-word">
