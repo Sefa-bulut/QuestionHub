@@ -9,6 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthResponse {
     private Long userId;
+    private String userName;
+    private int avatarId;
+    private String about;
     private String accessToken;
     private String responseMessage;
 }

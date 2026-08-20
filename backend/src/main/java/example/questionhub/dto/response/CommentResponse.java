@@ -12,6 +12,7 @@ public class CommentResponse {
     private Long userId;
     private String text;
     private String userName;
+    private int avatarId;
 
     public CommentResponse(Comment comment) {
         this.commentId = comment.getId();
@@ -19,6 +20,7 @@ public class CommentResponse {
         this.userId = comment.getUser().getId();
         this.text = comment.getText();
         this.userName = comment.getUser().getUserName();
+        this.avatarId = comment.getUser().getAvatarId();
     }
 
 }

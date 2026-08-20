@@ -35,7 +35,7 @@ public class AuthController {
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new AuthResponse(null, null, e.getMessage()));
+                    .body(new AuthResponse(null,null,0,null, null, e.getMessage()));
         }
     }
 

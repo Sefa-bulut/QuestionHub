@@ -1,5 +1,6 @@
 package example.questionhub.services;
 
+import example.questionhub.dto.request.UpdateUserRequest;
 import example.questionhub.entities.User;
 import example.questionhub.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -27,12 +28,12 @@ public class UserService {
         return userRepository.findById(userId).orElse(null);
     }
 
-    public User updateOneUser(Long userId, User user) {
+    public User updateOneUser(Long userId, UpdateUserRequest updateUserRequest) {
         Optional<User> currentUser = userRepository.findById(userId);
         if (currentUser.isPresent()) {
             User updatedUser = currentUser.get();
-            updatedUser.setUserName(user.getUserName());
-            updatedUser.setPassword(user.getPassword());
+            updatedUser.setAvatarId(updateUserRequest.getAvatarId());
+            updatedUser.setAbout(updateUserRequest.getAbout());
             return userRepository.save(updatedUser);
         } else {
             return null;

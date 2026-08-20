@@ -20,4 +20,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    private int avatarId;
+    private String about;
 }

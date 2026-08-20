@@ -39,6 +39,9 @@ public class AuthService {
         //Generate AuthResponse
         AuthResponse response = new AuthResponse();
         response.setUserId(user.getId());
+        response.setUserName(user.getUserName());
+        response.setAvatarId(user.getAvatarId());
+        response.setAbout(user.getAbout());
         response.setAccessToken(token);
         response.setResponseMessage("User successfully log in!");
 
@@ -65,6 +68,7 @@ public class AuthService {
         //Generate AuthResponse
         AuthResponse response = new AuthResponse();
         response.setUserId(returnUser.getId());
+        response.setUserName(returnUser.getUserName());
         response.setAccessToken(null); // ileride burada da bir token oluşturup dönülebilir
         response.setResponseMessage("User successfully registered!");
         return response;

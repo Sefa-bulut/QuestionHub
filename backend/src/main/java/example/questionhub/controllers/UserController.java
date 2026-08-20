@@ -1,5 +1,6 @@
 package example.questionhub.controllers;
 
+import example.questionhub.dto.request.UpdateUserRequest;
 import example.questionhub.entities.User;
 import example.questionhub.services.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +34,8 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public User updateOneUser(@PathVariable Long userId, @RequestBody User newUser) {
-        return userService.updateOneUser(userId, newUser);
+    public User updateOneUser(@PathVariable Long userId, @RequestBody UpdateUserRequest updateUserRequest) {
+        return userService.updateOneUser(userId, updateUserRequest);
     }
 
     @DeleteMapping("/{userId}")

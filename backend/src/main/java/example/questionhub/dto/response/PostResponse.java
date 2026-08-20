@@ -13,6 +13,7 @@ public class PostResponse {
     private Long userId;
     private String userName;
     private long likeCount;
+    private int avatarId;
 
     public PostResponse(Post post, long likeCount) {
         this.postId = post.getId();
@@ -21,5 +22,6 @@ public class PostResponse {
         this.userId = post.getUser().getId();
         this.userName = post.getUser().getUserName();
         this.likeCount = likeCount;
+        this.avatarId = post.getUser().getAvatarId();
     }
 }
