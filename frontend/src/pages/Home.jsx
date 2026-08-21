@@ -78,7 +78,8 @@ const Home = () => {
             currentUser={user}
             isLiked={likedPosts.has(post.postId)}
             likedId={likedPosts.get(post.postId)} // Silme işlemi için likeId gerekli
-            setLikedPosts={setLikedPosts} // Post tarafından listeyi güncelleyebilmek için gerekli
+            setLikedPosts={setLikedPosts} // Post tarafından like listesini güncelleyebilmek için
+            cardWidth="50%"
           />
         </div>
       ))}

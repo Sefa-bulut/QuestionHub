@@ -21,7 +21,14 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toaster } from "../ui/toaster";
 import UserAvatar from "../Profile/UserAvatar";
 
-const Post = ({ mypost, currentUser, isLiked, likedId, setLikedPosts }) => {
+const Post = ({
+  mypost,
+  currentUser,
+  isLiked,
+  likedId,
+  setLikedPosts,
+  cardWidth,
+}) => {
   const [open, setOpen] = useState(false);
   const [commentList, setCommentList] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -114,7 +121,7 @@ const Post = ({ mypost, currentUser, isLiked, likedId, setLikedPosts }) => {
 
   return (
     <div>
-      <Card.Root w={{ base: "95%", lg: "50%" }} mx="auto">
+      <Card.Root w={{ base: "95%", lg: cardWidth }} mx="auto">
         <Collapsible.Root open={open}>
           <Card.Body>
             <HStack mb="6" gap="3">

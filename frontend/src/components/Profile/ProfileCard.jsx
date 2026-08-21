@@ -20,7 +20,7 @@ const ProfileCard = ({ paramUser }) => {
 
   return (
     <Card.Root
-      flexDirection={{ base: "column", md: "row" }} // Mobil: Alt alta, Web: Yan yana
+      flexDirection="column" // Her ekran boyutunda alt alta olmasını sağlar
       overflow="hidden"
       w="100%"
       minH={{ base: "auto", md: "400px" }}
@@ -28,7 +28,8 @@ const ProfileCard = ({ paramUser }) => {
     >
       {/* SOL/ÜST KISIM: Görsel Alanı */}
       <Box
-        w={{ base: "100%", md: "50%" }}
+        w="100%" // Genişlik %50'den %100'e çıkarıldı
+        py={6} // Resmi biraz ortalamak ve boşluk vermek için padding eklendi
         minH={{ base: "50px", md: "auto" }}
         display="flex"
         alignItems="center"
@@ -42,7 +43,7 @@ const ProfileCard = ({ paramUser }) => {
             alt="Profile"
             w="100%"
             h="100%"
-            maxH={{ base: "200px", md: "100%" }}
+            maxH={{ base: "200px", md: "300px" }}
             objectFit="contain"
           />
         ) : (
@@ -63,20 +64,20 @@ const ProfileCard = ({ paramUser }) => {
       </Box>
 
       {/* SAĞ/ALT KISIM: Bilgi Alanı */}
-      <Box w={{ base: "100%", md: "60%" }} minW={0}>
-        <Card.Body wordBreak="break-word">
+      <Box w="100%" minW={0}>
+        <Card.Body wordBreak="break-word" textAlign="center">
           <Card.Title mb="2">{paramUser.userName}</Card.Title>
           <Card.Description>{about}</Card.Description>
 
-          <HStack mt="4" flexWrap="wrap" gap={2}>
+          <HStack mt="4" flexWrap="wrap" gap={2} justifyContent="center">
             <Badge>24 Posts</Badge>
             <Badge>120 Likes</Badge>
           </HStack>
         </Card.Body>
 
         {isOwner && (
-          <Card.Footer>
-            <HStack gap={3} wrap="wrap" w="100%">
+          <Card.Footer justifyContent="center">
+            <HStack gap={3} wrap="wrap">
               <AvatarSelectorDialog
                 selectedAvatar={selectedAvatar}
                 setSelectedAvatar={setSelectedAvatar}
