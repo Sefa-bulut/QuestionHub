@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
@@ -31,5 +33,8 @@ public class Comment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private Post post;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
 }

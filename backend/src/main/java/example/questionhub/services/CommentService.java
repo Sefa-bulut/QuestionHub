@@ -9,6 +9,7 @@ import example.questionhub.entities.User;
 import example.questionhub.repositories.CommentRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,6 +53,7 @@ public class CommentService {
             comment.setText(createCommentRequest.getText());
             comment.setUser(currentUser);
             comment.setPost(currentPost);
+            comment.setCreatedAt(new Date());
             return new CommentResponse(commentRepository.save(comment));
         } else {
             return null;

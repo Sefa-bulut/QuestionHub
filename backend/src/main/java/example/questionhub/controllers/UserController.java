@@ -1,6 +1,7 @@
 package example.questionhub.controllers;
 
 import example.questionhub.dto.request.UpdateUserRequest;
+import example.questionhub.dto.response.UserStatsResponse;
 import example.questionhub.entities.User;
 import example.questionhub.services.UserService;
 import org.springframework.web.bind.annotation.*;
@@ -41,6 +42,11 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public void deleteOneUser(@PathVariable Long userId) {
         userService.deleteOneUser(userId);
+    }
+
+    @GetMapping("/stats/{userId}")
+    public UserStatsResponse getUserStats(@PathVariable Long userId) {
+        return userService.getUserStats(userId);
     }
 
 }
