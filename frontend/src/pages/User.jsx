@@ -2,7 +2,7 @@ import Post from "@/components/Post/Post";
 import ProfileCard from "@/components/Profile/ProfileCard";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
-import { Box, Grid, Text, VStack } from "@chakra-ui/react";
+import { Box, Grid, Spinner, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -15,6 +15,17 @@ const User = () => {
   const [error, setError] = useState(null);
   const [likedPosts, setLikedPosts] = useState(new Map());
   const [postList, setPostList] = useState([]);
+  const [stats, setStats] = useState(null);
+
+  const getUserStats = async () => {
+    try {
+      const response = await api.get(`/users/stats/${userId}`);
+      setStats(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getAllPosts = async () => {
     try {
@@ -59,6 +70,7 @@ const User = () => {
     getLikes();
     getAllPosts();
     getOneUser();
+    getUserStats();
   }, [userId]);
 
   return (
@@ -77,18 +89,20 @@ const User = () => {
       overflowX="hidden"
     >
       <Box w="100%" minW={0}>
-        {paramUser && <ProfileCard paramUser={paramUser} />}
+        {paramUser && <ProfileCard paramUser={paramUser} stats={stats} />}
       </Box>
-      <Box minW={0} ml={5} w="90%" wordBreak="break-word">
-        <Box bg="gray.100" borderRadius="md" py={3} mb={5} textAlign="center">
-          <Text fontSize="xl" fontWeight="bold">
-            Son Postlar
-          </Text>
-        </Box>
+      <Box minW={0} ml={5} w="95%" wordBreak="break-word">
         <VStack w="100%" gap={5}>
-          {loading && <Text>Loading...</Text>}
+          {loading && (
+            <VStack minH="100vh" justifyContent="center" alignItems="center">
+              <Spinner color="white" size="lg" borderWidth="4px" />
+              <Text color="white">Loading...</Text>
+            </VStack>
+          )}
 
-          {error && <Text color="red.500">Error: {error}</Text>}
+          {error && (
+            <Text color="red.500">Beklenmeyen Bir Hata Oluştu: {error}</Text>
+          )}
 
           {!loading &&
             !error &&

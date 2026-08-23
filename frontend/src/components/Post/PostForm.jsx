@@ -19,6 +19,7 @@ const PostForm = ({ currentUser, setPostList }) => {
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const createPost = async () => {
     // Yeni bir post nesnesi oluşturuyoruz
@@ -29,6 +30,7 @@ const PostForm = ({ currentUser, setPostList }) => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const post = await createPost();
       //gelen post ile setPostlist'i güncelliyoruz ve Sayfa yeniden render oluyor
@@ -46,17 +48,19 @@ const PostForm = ({ currentUser, setPostList }) => {
     } catch (error) {
       toaster.create({
         title: "Hata",
-        description: "Başlık oluşturulamadı.",
+        description: "Beklenmeyen bir hata oluştu!",
         type: "error",
       });
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div>
       <Box
-        w={{ base: "95%", lg: "50%" }}
+        w={{ base: "100%", lg: "50%" }}
         mx="auto"
         p={4}
         border="1px solid"
@@ -87,7 +91,7 @@ const PostForm = ({ currentUser, setPostList }) => {
                 bg="white"
                 _hover={{ bg: "gray.200" }}
               >
-                Post oluşturun...
+                Yeni bir başlık oluşturun...
               </Button>
             </Dialog.Trigger>
           </Flex>
@@ -98,7 +102,7 @@ const PostForm = ({ currentUser, setPostList }) => {
             <Dialog.Positioner>
               <Dialog.Content w={{ base: "80%", lg: "100%" }}>
                 <Dialog.Header>
-                  <Dialog.Title>Post Oluşturma</Dialog.Title>
+                  <Dialog.Title>Başlık Oluşturma</Dialog.Title>
                 </Dialog.Header>
 
                 <Dialog.Body>
@@ -128,7 +132,11 @@ const PostForm = ({ currentUser, setPostList }) => {
                     <Button variant="outline">İptal</Button>
                   </Dialog.ActionTrigger>
 
-                  <Button colorScheme="blue" onClick={handleSubmit}>
+                  <Button
+                    loading={loading}
+                    colorScheme="blue"
+                    onClick={handleSubmit}
+                  >
                     Paylaş
                   </Button>
                 </Dialog.Footer>

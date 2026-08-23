@@ -1,6 +1,16 @@
 import { toaster } from "@/components/ui/toaster";
 import api from "@/services/api";
-import { Stack, Button, Field, Input, Card, Box } from "@chakra-ui/react";
+import {
+  Stack,
+  Button,
+  Field,
+  Input,
+  Card,
+  Box,
+  HStack,
+  Text,
+  Image,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -8,8 +18,21 @@ const Register = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
+    // Şifreler eşleşiyor mu kontrol ediyoruz
+    if (password !== confirmPassword) {
+      toaster.create({
+        title: "Hata",
+        description: "Şifreler eşleşmiyor.",
+        type: "error",
+      });
+      return;
+    }
+
+    setLoading(true);
     try {
       const userResponse = await createUser();
 
@@ -20,7 +43,7 @@ const Register = () => {
 
       toaster.create({
         title: "Başarılı",
-        description: "User başarıyla oluşturuldu.",
+        description: "Kayıt başarıyla oluşturuldu. Artık login olabilirsiniz",
         type: "success",
       });
 
@@ -28,10 +51,12 @@ const Register = () => {
     } catch (error) {
       toaster.create({
         title: "Hata",
-        description: "User oluşturulamadı.",
+        description: "Kayıt oluşturulamadı.",
         type: "error",
       });
       console.log(error.response?.data);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,8 +72,13 @@ const Register = () => {
     <Box pt="8">
       <Card.Root maxW="md" w={{ base: "95%", md: "65%", lg: "50%" }} mx="auto">
         <Card.Header>
-          <Card.Title>QuestionHub</Card.Title>
-          <Card.Description>Welcome to QuestionHub</Card.Description>
+          <Card.Title>
+            <HStack gap="5">
+              <Image src="/ask-me.png" boxSize="50px" objectFit="contain" />
+              <Text textStyle="xl">Question Hub Register</Text>
+            </HStack>
+          </Card.Title>
+          <Card.Description>Yeni Bir Hesap Oluştur</Card.Description>
         </Card.Header>
         <Card.Body>
           <Stack gap="4" w="full">
@@ -58,11 +88,6 @@ const Register = () => {
                 placeholder="Username"
                 onChange={(e) => setUsername(e.target.value)}
               />
-            </Field.Root>
-
-            <Field.Root>
-              <Field.Label>Email</Field.Label>
-              <Input type="email" placeholder="Email (Opsiyonel)" />
             </Field.Root>
 
             <Field.Root>
@@ -76,12 +101,12 @@ const Register = () => {
             <Field.Root>
               <Field.Label>Confirm Password</Field.Label>
               <Input
-                type="password"
-                placeholder="Confirm Password (Opsiyonel)"
+                placeholder="Confirm Password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </Field.Root>
 
-            <Button width="100%" onClick={handleRegister}>
+            <Button loading={loading} width="100%" onClick={handleRegister}>
               Register
             </Button>
 

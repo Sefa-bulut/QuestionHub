@@ -2,7 +2,7 @@ import Post from "@/components/Post/Post";
 import PostForm from "@/components/Post/PostForm";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
-import { VStack } from "@chakra-ui/react";
+import { Spinner, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
 const Home = () => {
@@ -62,8 +62,16 @@ const Home = () => {
 
   console.log(postList);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading)
+    return (
+      <div>
+        <VStack minH="100vh" justifyContent="center" alignItems="center">
+          <Spinner color="white" size="lg" borderWidth="4px" />
+          <Text color="white">Loading...</Text>
+        </VStack>
+      </div>
+    );
+  if (error) return <div>Beklenmeyen Bir Hata Oluştur: {error}</div>;
 
   return (
     <VStack w="100%" gap={8} align="stretch" p={6}>

@@ -1,7 +1,8 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { Box, Flex, HStack, IconButton } from "@chakra-ui/react";
+import { Box, Flex, HStack, IconButton, Text } from "@chakra-ui/react";
 import React from "react";
-import { LuLogOut } from "react-icons/lu";
+import { LuCircleUserRound, LuLogOut } from "react-icons/lu";
+import { SiHomebridge } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
@@ -16,21 +17,57 @@ const NavBar = () => {
   return (
     <div>
       <Flex
-        bg="ThreeDDarkShadow"
+        as="nav"
+        bg="gray.900"
         color="white"
-        px={6}
+        px={{ base: 4, md: 8 }}
         py={4}
         align="center"
         justify="space-between"
+        boxShadow="sm"
+        top={0}
+        zIndex={50}
       >
-        <Box>
-          <Link to="/">Home</Link>
-        </Box>
+        <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
+          <HStack
+            gap={2}
+            cursor="pointer"
+            _hover={{
+              color: "blue.400",
+            }}
+          >
+            <Box>
+              <SiHomebridge size={24} />
+            </Box>
+            <Text fontSize="md" fontWeight="bold" letterSpacing="tight">
+              Home
+            </Text>
+          </HStack>
+        </Link>
 
         <Box>
           {isAuthenticated ? (
-            <HStack gap={5}>
-              <Link to={`/users/${user.userId}`}>Profile</Link>
+            <HStack gap={6}>
+              <Link
+                to={`/users/${user.userId}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <HStack
+                  gap={2}
+                  cursor="pointer"
+                  _hover={{
+                    color: "blue.400",
+                  }}
+                >
+                  <Box>
+                    <LuCircleUserRound size={24} />
+                  </Box>
+                  <Text fontSize="md" fontWeight="bold" letterSpacing="tight">
+                    Profile
+                  </Text>
+                </HStack>
+              </Link>
+
               <IconButton
                 aria-label="Logout"
                 onClick={handleLogout}
@@ -40,7 +77,22 @@ const NavBar = () => {
               </IconButton>
             </HStack>
           ) : (
-            <Link to={`/login`}>Login/Register</Link>
+            <Link
+              to={`/login`}
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <HStack
+                gap={2}
+                cursor="pointer"
+                _hover={{
+                  color: "blue.400",
+                }}
+              >
+                <Text fontSize="md" fontWeight="bold" letterSpacing="tight">
+                  Login/Register
+                </Text>
+              </HStack>
+            </Link>
           )}
         </Box>
       </Flex>

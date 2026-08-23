@@ -4,14 +4,18 @@ import { Badge, Box, Card, HStack, Image, VStack } from "@chakra-ui/react";
 import { avatars } from "@/assets/avatarImages/avatars";
 import AboutEditDialog from "./AboutEditDialog";
 import { useAuth } from "@/contexts/AuthContext";
+import { HiFire, HiHeart } from "react-icons/hi";
+import { LuMessageSquare } from "react-icons/lu";
 
-const ProfileCard = ({ paramUser }) => {
+const ProfileCard = ({ paramUser, stats }) => {
   const [selectedAvatar, setSelectedAvatar] = useState(paramUser.avatarId);
   const [about, setAbout] = useState(paramUser.about);
   const currentAvatar = avatars.find((avatar) => avatar.id === selectedAvatar);
   const firstLetter = paramUser.userName?.charAt(0).toUpperCase();
   const { user, isAuthenticated } = useAuth();
   const isOwner = paramUser?.id === user?.userId;
+
+  console.log("profile stats: ", stats);
 
   useEffect(() => {
     setSelectedAvatar(paramUser.avatarId);
@@ -69,10 +73,22 @@ const ProfileCard = ({ paramUser }) => {
           <Card.Title mb="2">{paramUser.userName}</Card.Title>
           <Card.Description>{about}</Card.Description>
 
-          <HStack mt="4" flexWrap="wrap" gap={2} justifyContent="center">
-            <Badge>24 Posts</Badge>
-            <Badge>120 Likes</Badge>
-          </HStack>
+          {stats && (
+            <HStack mt="4" flexWrap="wrap" gap={2} justifyContent="center">
+              <Badge size="lg" colorPalette="blue">
+                <HiFire />
+                Topic {stats.sharedPostCount}
+              </Badge>
+              <Badge size="lg" colorPalette="red">
+                <HiHeart />
+                Like {stats.receivedLikeCount}
+              </Badge>
+              <Badge size="lg" colorPalette="green">
+                <LuMessageSquare />
+                Comment {stats.receivedCommentCount}
+              </Badge>
+            </HStack>
+          )}
         </Card.Body>
 
         {isOwner && (

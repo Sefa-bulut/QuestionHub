@@ -1,19 +1,35 @@
 import { toaster } from "@/components/ui/toaster";
 import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
-import { Stack, Button, Field, Input, Card, Box } from "@chakra-ui/react";
+import {
+  Stack,
+  Button,
+  Field,
+  Input,
+  Card,
+  Box,
+  Image,
+  HStack,
+  Text,
+  InputGroup,
+  IconButton,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
+import { LuEye, LuEyeOff } from "react-icons/lu";
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // useAuth() çağırarak Context içindeki login fonksiyonunu al
   const { login } = useAuth();
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
       const userResponse = await loginUser();
 
@@ -33,10 +49,12 @@ const Login = () => {
     } catch (error) {
       toaster.create({
         title: "Hata",
-        description: "Giriş başarısız",
+        description: "Kullanıcı Adı veya Şifre Yanlış!",
         type: "error",
       });
       console.log(error.response?.data);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,8 +70,13 @@ const Login = () => {
     <Box pt="8">
       <Card.Root maxW="md" w={{ base: "95%", md: "65%", lg: "50%" }} mx="auto">
         <Card.Header>
-          <Card.Title>QuestionHub</Card.Title>
-          <Card.Description>Welcome to QuestionHub</Card.Description>
+          <Card.Title>
+            <HStack gap="5">
+              <Image src="/ask-me.png" boxSize="50px" objectFit="contain" />
+              <Text textStyle="xl">Question Hub Login</Text>
+            </HStack>
+          </Card.Title>
+          <Card.Description>Hesabına Giriş Yap</Card.Description>
         </Card.Header>
         <Card.Body>
           <Stack gap="4" w="full">
@@ -67,13 +90,29 @@ const Login = () => {
 
             <Field.Root>
               <Field.Label>Password</Field.Label>
-              <Input
-                placeholder="Password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <InputGroup
+                endElement={
+                  <IconButton
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={
+                      showPassword ? "Hide password" : "Show password"
+                    }
+                  >
+                    {showPassword ? <LuEyeOff /> : <LuEye />}
+                  </IconButton>
+                }
+              >
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </InputGroup>
             </Field.Root>
 
-            <Button width="100%" onClick={handleLogin}>
+            <Button loading={loading} width="100%" onClick={handleLogin}>
               Login
             </Button>
 

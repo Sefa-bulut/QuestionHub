@@ -51,6 +51,7 @@ const AboutEditDialog = ({ about, setAbout }) => {
 
           <Dialog.Body overflowY="auto" py={4}>
             <Textarea
+              maxLength={220}
               placeholder="Kendinizden bahsedin..."
               rows={5}
               autoFocus

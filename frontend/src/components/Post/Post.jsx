@@ -10,6 +10,7 @@ import {
   Flex,
   VStack,
   Separator,
+  Spinner,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { HiHeart } from "react-icons/hi";
@@ -121,7 +122,7 @@ const Post = ({
 
   return (
     <div>
-      <Card.Root w={{ base: "95%", lg: cardWidth }} mx="auto">
+      <Card.Root w={{ base: "100%", lg: cardWidth }} mx="auto">
         <Collapsible.Root open={open}>
           <Card.Body>
             <HStack mb="6" gap="3">
@@ -167,7 +168,11 @@ const Post = ({
           <Collapsible.Content>
             <Box p="4" borderTopWidth="1px">
               <VStack align="stretch" gap={4}>
-                {loading && <Text>Loading...</Text>}
+                {loading && (
+                  <VStack>
+                    <Spinner color="gray.500" size="md" borderWidth="2px" />
+                  </VStack>
+                )}
                 {error && <Text color="red.500">{error}</Text>}
                 {!loading &&
                   commentList?.map((comment) => (
