@@ -1,6 +1,7 @@
 package example.questionhub.controllers;
 
 import example.questionhub.dto.request.UpdateUserRequest;
+import example.questionhub.dto.response.UserResponse;
 import example.questionhub.dto.response.UserStatsResponse;
 import example.questionhub.entities.User;
 import example.questionhub.services.UserService;
@@ -20,22 +21,22 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
+    public List<UserResponse> getAllUsers() {
         return userService.getAllUsers();
     }
 
     @PostMapping
-    public User createOneUser(@RequestBody User user) {
+    public UserResponse createOneUser(@RequestBody User user) {
         return userService.createOneUser(user);
     }
 
     @GetMapping("/{userId}")
-    public User getOneUser(@PathVariable Long userId) {
-        return userService.getOneUser(userId);
+    public UserResponse getOneUser(@PathVariable Long userId) {
+        return new UserResponse(userService.getOneUser(userId));
     }
 
     @PutMapping("/{userId}")
-    public User updateOneUser(@PathVariable Long userId, @RequestBody UpdateUserRequest updateUserRequest) {
+    public UserResponse updateOneUser(@PathVariable Long userId, @RequestBody UpdateUserRequest updateUserRequest) {
         return userService.updateOneUser(userId, updateUserRequest);
     }
 

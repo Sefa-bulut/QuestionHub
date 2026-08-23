@@ -1,6 +1,8 @@
 package example.questionhub.services;
 
 import example.questionhub.dto.request.UpdateUserRequest;
+import example.questionhub.dto.response.PostResponse;
+import example.questionhub.dto.response.UserResponse;
 import example.questionhub.dto.response.UserStatsResponse;
 import example.questionhub.entities.User;
 import example.questionhub.repositories.PostRepository;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -20,25 +23,27 @@ public class UserService {
         this.postRepository = postRepository;
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map((user) -> new UserResponse(user))
+                .collect(Collectors.toList());
     }
 
-    public User createOneUser(User user) {
-        return userRepository.save(user);
+    public UserResponse createOneUser(User user) {
+        return new UserResponse(userRepository.save(user));
     }
 
     public User getOneUser(Long userId) {
         return userRepository.findById(userId).orElse(null);
     }
 
-    public User updateOneUser(Long userId, UpdateUserRequest updateUserRequest) {
+    public UserResponse updateOneUser(Long userId, UpdateUserRequest updateUserRequest) {
         Optional<User> currentUser = userRepository.findById(userId);
         if (currentUser.isPresent()) {
             User updatedUser = currentUser.get();
             updatedUser.setAvatarId(updateUserRequest.getAvatarId());
             updatedUser.setAbout(updateUserRequest.getAbout());
-            return userRepository.save(updatedUser);
+            return new UserResponse(userRepository.save(updatedUser));
         } else {
             return null;
         }
