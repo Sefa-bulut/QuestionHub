@@ -19,7 +19,7 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @Value("${jwt.expiration}")
+    @Value("${jwt.access-token-expiration}")
     private long jwtExpiration;
 
     private Logger logger = Logger.getLogger(JwtUtil.class.getName());
