@@ -26,34 +26,27 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody LoginUserRequest loginUserRequest) {
-        return authService.login(loginUserRequest);
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginUserRequest loginUserRequest) {
+        AuthResponse result = authService.login(loginUserRequest);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterUserRequest registerUserRequest) {
-        try {
-            AuthResponse result = authService.register(registerUserRequest);
-            return ResponseEntity
-                    .status(HttpStatus.CREATED)
-                    .body(result);
-        } catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(new AuthResponse(null, null,
-                            0, null, null,
-                            null, e.getMessage()));
-        }
+        AuthResponse result = authService.register(registerUserRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @PostMapping("/refresh")
-    public RefreshTokenResponse refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
-        return authService.refreshToken(refreshTokenRequest);
+    public ResponseEntity<RefreshTokenResponse> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        RefreshTokenResponse result = authService.refreshToken(refreshTokenRequest);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/logout")
-    public String logoutUser(@RequestBody RefreshTokenRequest refreshTokenRequest) {
-        return authService.logoutUser(refreshTokenRequest);
+    public ResponseEntity<String> logoutUser(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        String result = authService.logoutUser(refreshTokenRequest);
+        return ResponseEntity.ok(result);
     }
 
 }

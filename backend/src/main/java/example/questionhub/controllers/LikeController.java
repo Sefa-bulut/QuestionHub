@@ -4,6 +4,7 @@ import example.questionhub.dto.request.CreateLikeRequest;
 import example.questionhub.dto.response.LikeResponse;
 import example.questionhub.entities.Like;
 import example.questionhub.services.LikeService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,19 +20,22 @@ public class LikeController {
     }
 
     @GetMapping
-    public List<LikeResponse> getAllLikes(@RequestParam Optional<Long> userId,
-                                          @RequestParam Optional<Long> postId) {
-        return likeService.getAllLikes(userId, postId);
+    public ResponseEntity<List<LikeResponse>> getAllLikes(@RequestParam Optional<Long> userId,
+                                                          @RequestParam Optional<Long> postId) {
+        List<LikeResponse> results = likeService.getAllLikes(userId, postId);
+        return ResponseEntity.ok(results);
     }
 
     @PostMapping
-    public LikeResponse createOneLike(@RequestBody CreateLikeRequest createLikeRequest) {
-        return likeService.createOneLike(createLikeRequest);
+    public ResponseEntity<LikeResponse> createOneLike(@RequestBody CreateLikeRequest createLikeRequest) {
+        LikeResponse result = likeService.createOneLike(createLikeRequest);
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/{likeId}")
-    public Like getOneLike(@PathVariable Long likeId) {
-        return likeService.getOneLike(likeId);
+    public ResponseEntity<LikeResponse> getOneLike(@PathVariable Long likeId) {
+        LikeResponse result = new LikeResponse(likeService.getOneLike(likeId));
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/{likeId}")

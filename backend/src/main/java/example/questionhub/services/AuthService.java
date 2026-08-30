@@ -8,10 +8,11 @@ import example.questionhub.dto.response.RefreshTokenResponse;
 import example.questionhub.entities.RefreshToken;
 import example.questionhub.entities.Role;
 import example.questionhub.entities.User;
+import example.questionhub.exceptions.DuplicateUsernameException;
+import example.questionhub.exceptions.InvalidCredentialsException;
+import example.questionhub.exceptions.RefreshTokenNotFoundException;
 import example.questionhub.repositories.UserRepository;
-import example.questionhub.security.service.CustomUserDetails;
 import example.questionhub.security.util.JwtUtil;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,10 +35,10 @@ public class AuthService {
 
     public AuthResponse login(LoginUserRequest loginUserRequest) {
         User user = userRepository.findByUserName(loginUserRequest.getUserName())
-                .orElseThrow(() -> new RuntimeException("Invalid username or password!"));
+                .orElseThrow(() -> new InvalidCredentialsException("Invalid username or password!"));
 
         if (!passwordEncoder.matches(loginUserRequest.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Invalid username or password!");
+            throw new InvalidCredentialsException("Invalid username or password!");
         }
 
         //Generate access token
@@ -62,7 +63,7 @@ public class AuthService {
         Optional<User> user = userRepository.findByUserName(registerUserRequest.getUserName());
 
         if (user.isPresent()) {
-            throw new RuntimeException("Username already in use!");
+            throw new DuplicateUsernameException("Username already in use!");
         }
 
         //Password encoding
@@ -96,14 +97,14 @@ public class AuthService {
     public RefreshTokenResponse refreshToken(RefreshTokenRequest refreshTokenRequest) {
         String refreshToken = refreshTokenRequest.getRefreshToken();
         return refreshTokenService.findByToken(refreshToken)
-                .map(refreshTokenService::verifyExpiration)
+                .map(refreshTokenService::verifyExpiration) //süresi geçmişse burada hata fırlatıcak
                 .map((token) -> {
                     String newAccessToken = jwtUtil.generateToken(token.getUser());
                     return new RefreshTokenResponse(
                             token.getToken(),
                             "Bearer " + newAccessToken,
                             "Access token refreshed successfully.");
-                }).orElseThrow(() -> new RuntimeException("Invalid refresh token."));
+                }).orElseThrow(() -> new RefreshTokenNotFoundException("Refresh token not found in the db"));
     }
 
     public String logoutUser(RefreshTokenRequest refreshTokenRequest) {
@@ -116,6 +117,6 @@ public class AuthService {
                 .map((token) -> {
                     refreshTokenService.deleteRefreshToken(token);
                     return "Logged out successfully.";
-                }).orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+                }).orElseThrow(() -> new RefreshTokenNotFoundException("Refresh token not found"));
     }
 }

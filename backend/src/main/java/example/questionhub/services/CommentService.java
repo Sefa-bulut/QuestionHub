@@ -6,6 +6,8 @@ import example.questionhub.dto.response.CommentResponse;
 import example.questionhub.entities.Comment;
 import example.questionhub.entities.Post;
 import example.questionhub.entities.User;
+import example.questionhub.exceptions.CommentNotFoundException;
+import example.questionhub.exceptions.PostNotFoundException;
 import example.questionhub.repositories.CommentRepository;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +44,8 @@ public class CommentService {
     }
 
     public Comment getOneComment(Long commentId) {
-        return commentRepository.findById(commentId).orElse(null);
+        return commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException("Comment not found with id: " + commentId));
     }
 
     public CommentResponse createOneComment(CreateCommentRequest createCommentRequest) {
@@ -56,7 +59,7 @@ public class CommentService {
             comment.setCreatedAt(new Date());
             return new CommentResponse(commentRepository.save(comment));
         } else {
-            return null;
+            throw new PostNotFoundException("Post or User not found");
         }
     }
 
@@ -68,7 +71,7 @@ public class CommentService {
             comment.setText(updateCommentRequest.getText());
             return commentRepository.save(comment);
         } else {
-            return null;
+            throw new CommentNotFoundException("Comment not found with id: " + commentId);
         }
     }
 

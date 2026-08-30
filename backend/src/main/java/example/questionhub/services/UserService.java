@@ -5,6 +5,7 @@ import example.questionhub.dto.response.PostResponse;
 import example.questionhub.dto.response.UserResponse;
 import example.questionhub.dto.response.UserStatsResponse;
 import example.questionhub.entities.User;
+import example.questionhub.exceptions.UserNotFoundException;
 import example.questionhub.repositories.PostRepository;
 import example.questionhub.repositories.UserRepository;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,8 @@ public class UserService {
     }
 
     public User getOneUser(Long userId) {
-        return userRepository.findById(userId).orElse(null);
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("User not found with id: " + userId));
     }
 
     public UserResponse updateOneUser(Long userId, UpdateUserRequest updateUserRequest) {
@@ -45,7 +47,7 @@ public class UserService {
             updatedUser.setAbout(updateUserRequest.getAbout());
             return new UserResponse(userRepository.save(updatedUser));
         } else {
-            return null;
+            throw new UserNotFoundException("User not found!");
         }
     }
 
@@ -64,7 +66,8 @@ public class UserService {
             userStatsResponse.setReceivedLikeCount(likeCount);
             userStatsResponse.setSharedPostCount(postCount);
             return userStatsResponse;
+        } else {
+            throw new UserNotFoundException("User not found!");
         }
-        return null;
     }
 }

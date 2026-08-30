@@ -5,6 +5,10 @@ import example.questionhub.dto.response.LikeResponse;
 import example.questionhub.entities.Like;
 import example.questionhub.entities.Post;
 import example.questionhub.entities.User;
+import example.questionhub.exceptions.DuplicateLikeException;
+import example.questionhub.exceptions.LikeNotFoundException;
+import example.questionhub.exceptions.PostNotFoundException;
+import example.questionhub.exceptions.UserNotFoundException;
 import example.questionhub.repositories.LikeRepository;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -40,7 +44,8 @@ public class LikeService {
     }
 
     public Like getOneLike(Long likeId) {
-        return likeRepository.findById(likeId).orElse(null);
+        return likeRepository.findById(likeId)
+                .orElseThrow(() -> new LikeNotFoundException("Like not found with id: " + likeId));
     }
 
     public LikeResponse createOneLike(CreateLikeRequest createLikeRequest) {
@@ -53,12 +58,10 @@ public class LikeService {
             try {
                 return new LikeResponse(likeRepository.save(like));
             } catch (DataIntegrityViolationException ex) {
-                //throw DuplicateLikeException
-                System.out.println("Mevcut kullanıcı bu posta zaten beğeni yaptı!");
-                return null;
+                throw new DuplicateLikeException("Mevcut kullanıcı bu posta zaten beğeni yaptı!");
             }
         } else {
-            return null;
+            throw new PostNotFoundException("User or Post not found!");
         }
     }
 

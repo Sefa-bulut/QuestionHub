@@ -5,6 +5,8 @@ import example.questionhub.dto.request.UpdatePostRequest;
 import example.questionhub.dto.response.PostResponse;
 import example.questionhub.entities.Post;
 import example.questionhub.entities.User;
+import example.questionhub.exceptions.PostNotFoundException;
+import example.questionhub.exceptions.UserNotFoundException;
 import example.questionhub.repositories.LikeRepository;
 import example.questionhub.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +45,8 @@ public class PostService {
     }
 
     public Post getOnePost(Long postId) {
-        return postRepository.findById(postId).orElse(null);
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException("Post not found with id: " + postId));
     }
 
     public PostResponse createOnePost(CreatePostRequest createPostRequest) {
@@ -56,7 +59,7 @@ public class PostService {
             postToSave.setCreatedAt(new Date());
             return new PostResponse(postRepository.save(postToSave), 0);
         } else {
-            return null;
+            throw new UserNotFoundException("User not found for this post!");
         }
     }
 
@@ -73,7 +76,7 @@ public class PostService {
             postRepository.save(updatedPost);
             return updatedPost;
         } else {
-            return null;
+            throw new PostNotFoundException("Post not found");
         }
     }
 

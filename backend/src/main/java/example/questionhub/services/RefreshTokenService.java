@@ -2,6 +2,7 @@ package example.questionhub.services;
 
 import example.questionhub.entities.RefreshToken;
 import example.questionhub.entities.User;
+import example.questionhub.exceptions.RefreshTokenExpiredException;
 import example.questionhub.repositories.RefreshTokenRepository;
 import example.questionhub.repositories.UserRepository;
 import example.questionhub.security.service.CustomUserDetails;
@@ -48,7 +49,7 @@ public class RefreshTokenService {
     public RefreshToken verifyExpiration(RefreshToken refreshToken) {
         if (refreshToken.getExpiryDate().isBefore(Instant.now())) {
             refreshTokenRepository.delete(refreshToken);
-            throw new RuntimeException("Token is expired. Please login again!");
+            throw new RefreshTokenExpiredException("Token is expired. Please login again!");
         }
         return refreshToken;
     }

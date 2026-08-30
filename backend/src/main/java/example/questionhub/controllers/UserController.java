@@ -5,10 +5,11 @@ import example.questionhub.dto.response.UserResponse;
 import example.questionhub.dto.response.UserStatsResponse;
 import example.questionhub.entities.User;
 import example.questionhub.services.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -21,23 +22,28 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserResponse> getAllUsers() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        List<UserResponse> results = userService.getAllUsers();
+        return ResponseEntity.ok(results);
     }
 
     @PostMapping
-    public UserResponse createOneUser(@RequestBody User user) {
-        return userService.createOneUser(user);
+    public ResponseEntity<UserResponse> createOneUser(@RequestBody User user) {
+        UserResponse result = userService.createOneUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     @GetMapping("/{userId}")
-    public UserResponse getOneUser(@PathVariable Long userId) {
-        return new UserResponse(userService.getOneUser(userId));
+    public ResponseEntity<UserResponse> getOneUser(@PathVariable Long userId) {
+        UserResponse result = new UserResponse(userService.getOneUser(userId));
+        return ResponseEntity.ok(result);
     }
 
     @PutMapping("/{userId}")
-    public UserResponse updateOneUser(@PathVariable Long userId, @RequestBody UpdateUserRequest updateUserRequest) {
-        return userService.updateOneUser(userId, updateUserRequest);
+    public ResponseEntity<UserResponse> updateOneUser(@PathVariable Long userId,
+                                                      @RequestBody UpdateUserRequest updateUserRequest) {
+        UserResponse result = userService.updateOneUser(userId, updateUserRequest);
+        return ResponseEntity.ok(result);
     }
 
     @DeleteMapping("/{userId}")
@@ -46,8 +52,9 @@ public class UserController {
     }
 
     @GetMapping("/stats/{userId}")
-    public UserStatsResponse getUserStats(@PathVariable Long userId) {
-        return userService.getUserStats(userId);
+    public ResponseEntity<UserStatsResponse> getUserStats(@PathVariable Long userId) {
+        UserStatsResponse result = userService.getUserStats(userId);
+        return ResponseEntity.ok(result);
     }
 
 }
