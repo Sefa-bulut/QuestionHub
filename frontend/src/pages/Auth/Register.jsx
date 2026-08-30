@@ -1,4 +1,5 @@
 import { toaster } from "@/components/ui/toaster";
+import { useAuth } from "@/contexts/AuthContext";
 import api from "@/services/api";
 import {
   Stack,
@@ -21,6 +22,8 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const { login } = useAuth();
+
   const handleRegister = async () => {
     // Şifreler eşleşiyor mu kontrol ediyoruz
     if (password !== confirmPassword) {
@@ -36,8 +39,12 @@ const Register = () => {
     try {
       const userResponse = await createUser();
 
+      // Register sonrası kullanıcıyı AuthContext'e kaydediyoruz
+      login(userResponse);
+
       setUsername("");
       setPassword("");
+      setConfirmPassword("");
 
       console.log(userResponse);
 
@@ -47,7 +54,7 @@ const Register = () => {
         type: "success",
       });
 
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       toaster.create({
         title: "Hata",

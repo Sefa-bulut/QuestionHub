@@ -13,10 +13,11 @@ import {
   Text,
   InputGroup,
   IconButton,
+  Alert,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { LuEye, LuEyeOff } from "react-icons/lu";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -24,6 +25,9 @@ const Login = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [searchParams] = useSearchParams();
+
+  const sessionExpired = searchParams.get("sessionExpired") === "true";
 
   // useAuth() çağırarak Context içindeki login fonksiyonunu al
   const { login } = useAuth();
@@ -67,8 +71,21 @@ const Login = () => {
   };
 
   return (
-    <Box pt="8">
-      <Card.Root maxW="md" w={{ base: "95%", md: "65%", lg: "50%" }} mx="auto">
+    <Stack
+      gap="4"
+      maxW="md"
+      w={{ base: "95%", md: "65%", lg: "65%" }}
+      mx="auto"
+    >
+      {sessionExpired && (
+        <Alert.Root status="info" title="This is the alert title">
+          <Alert.Indicator />
+          <Alert.Title>
+            Oturumunuzun süresi doldu. Lütfen tekrar giriş yapın.
+          </Alert.Title>
+        </Alert.Root>
+      )}
+      <Card.Root>
         <Card.Header>
           <Card.Title>
             <HStack gap="5">
@@ -131,7 +148,7 @@ const Login = () => {
           </Stack>
         </Card.Body>
       </Card.Root>
-    </Box>
+    </Stack>
   );
 };
 

@@ -1,3 +1,4 @@
+import api from "@/services/api";
 import { createContext, useContext, useState } from "react";
 
 const AuthContext = createContext(null);
@@ -13,7 +14,8 @@ export const AuthProvider = ({ children }) => {
   // 2. Login fonksiyonumuz artık doğrudan backend'den dönen AuthResponse objesini (data) alacak
   const login = (authResponseData) => {
     // Backend'den gelen DTO alanlarını parçalıyoruz (Destructuring)
-    const { accessToken, userId, avatarId, userName, about } = authResponseData;
+    const { accessToken, refreshToken, userId, avatarId, userName, about } =
+      authResponseData;
 
     // Kullanıcı bilgilerini frontend'de kullanmak üzere bir objede topluyoruz
     const userData = {
@@ -24,7 +26,13 @@ export const AuthProvider = ({ children }) => {
     };
 
     // Verileri tarayıcı hafızasına (localStorage) kaydediyoruz
+
+    //Access token
     localStorage.setItem("token", accessToken);
+
+    //Refresh token
+    localStorage.setItem("refreshToken", refreshToken);
+
     localStorage.setItem("user", JSON.stringify(userData));
 
     // React state'lerini güncelliyoruz
@@ -33,11 +41,20 @@ export const AuthProvider = ({ children }) => {
   };
 
   // 3. Çıkış yapıldığında her şeyi temizle
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setToken(null);
-    setUser(null);
+  const logout = async () => {
+    try {
+      const refreshToken = localStorage.getItem("refreshToken");
+
+      await api.post("/auth/logout", { refreshToken });
+    } catch (error) {
+      console.log("Logout API hatası:", error.response?.data);
+    } finally {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("user");
+      setToken(null);
+      setUser(null);
+    }
   };
 
   //User ile ilgili bir güncelleme sonrası uygulamayı senkronize tutan fonksiyon

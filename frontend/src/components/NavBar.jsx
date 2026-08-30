@@ -1,6 +1,6 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Box, Flex, HStack, IconButton, Text } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { LuCircleUserRound, LuLogOut } from "react-icons/lu";
 import { SiHomebridge } from "react-icons/si";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,10 +8,15 @@ import { Link, useNavigate } from "react-router-dom";
 const NavBar = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    setLoading(true);
+
+    await logout();
     navigate("/login");
+
+    setLoading(false);
   };
 
   return (
@@ -72,6 +77,7 @@ const NavBar = () => {
                 aria-label="Logout"
                 onClick={handleLogout}
                 colorPalette="red"
+                loading={loading}
               >
                 <LuLogOut />
               </IconButton>
