@@ -4,6 +4,8 @@ import example.questionhub.entities.Post;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 public class PostResponse {
@@ -14,6 +16,7 @@ public class PostResponse {
     private String userName;
     private long likeCount;
     private int avatarId;
+    private Date createdAt;
 
     public PostResponse(Post post, long likeCount) {
         this.postId = post.getId();
@@ -23,5 +26,6 @@ public class PostResponse {
         this.userName = post.getUser().getUserName();
         this.likeCount = likeCount;
         this.avatarId = post.getUser().getAvatarId();
+        this.createdAt = post.getCreatedAt();
     }
 }

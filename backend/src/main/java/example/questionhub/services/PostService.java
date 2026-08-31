@@ -10,6 +10,7 @@ import example.questionhub.exceptions.UserNotFoundException;
 import example.questionhub.repositories.LikeRepository;
 import example.questionhub.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -33,9 +34,9 @@ public class PostService {
     public List<PostResponse> getAllPosts(Optional<Long> userId) {
         List<Post> list;
         if (userId.isPresent()) {
-            list = postRepository.findByUserId(userId.get());
+            list = postRepository.findByUserIdOrderByCreatedAtDesc(userId.get());
         } else {
-            list = postRepository.findAll();
+            list = postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
         }
         // use mapper to transform post to postresponse
         return list.stream().map((p) -> {

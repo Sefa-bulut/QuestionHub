@@ -4,6 +4,8 @@ import example.questionhub.entities.Comment;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 public class CommentResponse {
@@ -13,6 +15,7 @@ public class CommentResponse {
     private String text;
     private String userName;
     private int avatarId;
+    private Date createdAt;
 
     public CommentResponse(Comment comment) {
         this.commentId = comment.getId();
@@ -21,6 +24,7 @@ public class CommentResponse {
         this.text = comment.getText();
         this.userName = comment.getUser().getUserName();
         this.avatarId = comment.getUser().getAvatarId();
+        this.createdAt = comment.getCreatedAt();
     }
 
 }
