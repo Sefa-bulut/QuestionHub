@@ -164,9 +164,10 @@ const Post = ({
                 justifyContent="flex-start"
                 color={isLiked ? "red.600" : "gray.500"}
                 onClick={handleLike}
+                disabled={likeLock}
               >
                 {likeCount}
-                <HiHeart />
+                {likeLock ? <Spinner size="sm" color="current" /> : <HiHeart />}
               </Button>
 
               <Button variant="ghost" size="lg" onClick={handleComments}>

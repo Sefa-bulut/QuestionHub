@@ -7,6 +7,7 @@ import {
   Field,
   Flex,
   Portal,
+  Spinner,
   Stack,
   Textarea,
 } from "@chakra-ui/react";
@@ -19,6 +20,7 @@ const CommentForm = ({ currentPost, setCommentList }) => {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
   const { user } = useAuth();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const createComment = async () => {
     // Yeni bir comment nesnesi oluşturuyoruz
@@ -33,6 +35,8 @@ const CommentForm = ({ currentPost, setCommentList }) => {
   };
 
   const handleSubmit = async () => {
+    if (!text.trim()) return;
+    setIsSubmitting(true);
     try {
       const comment = await createComment();
       //gelen comment ile setCommentlist'i güncelliyoruz ve Sayfa yeniden render oluyor
@@ -52,6 +56,8 @@ const CommentForm = ({ currentPost, setCommentList }) => {
         type: "error",
       });
       console.log(error);
+    } finally {
+      setIsSubmitting(false);
     }
   };
   return (
@@ -109,6 +115,8 @@ const CommentForm = ({ currentPost, setCommentList }) => {
                         placeholder="Ne düşünüyorsunuz?"
                         autoresize
                         onChange={(e) => setText(e.target.value)}
+                        value={text}
+                        disabled={isSubmitting}
                       />
                     </Field.Root>
                   </Stack>
@@ -118,9 +126,16 @@ const CommentForm = ({ currentPost, setCommentList }) => {
                   <Dialog.ActionTrigger asChild>
                     <Button variant="outline">İptal</Button>
                   </Dialog.ActionTrigger>
-
-                  <Button colorScheme="blue" onClick={handleSubmit}>
-                    Paylaş
+                  <Button
+                    colorScheme="blue"
+                    onClick={handleSubmit}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <Spinner size="sm" color="white" />
+                    ) : (
+                      "Paylaş"
+                    )}
                   </Button>
                 </Dialog.Footer>
               </Dialog.Content>
