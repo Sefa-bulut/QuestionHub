@@ -15,8 +15,6 @@ const ProfileCard = ({ paramUser, stats }) => {
   const { user, isAuthenticated } = useAuth();
   const isOwner = paramUser?.id === user?.userId;
 
-  console.log("profile stats: ", stats);
-
   useEffect(() => {
     setSelectedAvatar(paramUser.avatarId);
     setAbout(paramUser.about);

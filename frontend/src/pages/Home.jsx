@@ -48,8 +48,6 @@ const Home = () => {
       );
 
       setLikedPosts(map);
-
-      console.log(response.data);
     } catch (err) {
       console.log(err.message);
     }
@@ -59,8 +57,6 @@ const Home = () => {
     getLikes();
     getAllPosts();
   }, []);
-
-  console.log(postList);
 
   if (loading)
     return (

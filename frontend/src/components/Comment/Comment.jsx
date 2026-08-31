@@ -25,9 +25,21 @@ const Comment = ({ comment }) => {
           </Link>
 
           <Box>
-            <Text fontWeight="semibold" fontSize="sm">
-              {comment.userName}
-            </Text>
+            <HStack gap={3}>
+              <Text fontWeight="semibold" fontSize="sm">
+                {comment.userName}
+              </Text>
+
+              <Text fontSize="xs" color="gray.500">
+                {comment.createdAt
+                  ? new Date(comment.createdAt).toLocaleDateString("tr-TR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })
+                  : "Tarih yok"}
+              </Text>
+            </HStack>
 
             <Card.Description>{comment.text}</Card.Description>
           </Box>

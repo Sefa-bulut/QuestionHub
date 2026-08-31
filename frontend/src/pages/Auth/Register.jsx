@@ -46,11 +46,9 @@ const Register = () => {
       setPassword("");
       setConfirmPassword("");
 
-      console.log(userResponse);
-
       toaster.create({
         title: "Başarılı",
-        description: "Kayıt başarıyla oluşturuldu. Artık login olabilirsiniz",
+        description: "Kayıt başarıyla oluşturuldu.",
         type: "success",
       });
 

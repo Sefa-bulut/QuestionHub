@@ -21,7 +21,6 @@ const User = () => {
     try {
       const response = await api.get(`/users/stats/${userId}`);
       setStats(response.data);
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -51,7 +50,6 @@ const User = () => {
         response.data.map((like) => [like.postId, like.likeId]),
       );
       setLikedPosts(map);
-      console.log(response.data);
     } catch (err) {
       console.log(err.message);
     }

@@ -53,9 +53,13 @@ const Login = () => {
     } catch (error) {
       toaster.create({
         title: "Hata",
-        description: "Kullanıcı Adı veya Şifre Yanlış!",
+        description:
+          error.response?.data?.message ||
+          error.message ||
+          "Beklenmeyen bir hata oluştu.",
         type: "error",
       });
+
       console.log(error.response?.data);
     } finally {
       setLoading(false);

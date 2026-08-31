@@ -103,7 +103,6 @@ const Post = ({
       const response = await api.get(`/comments?postId=${mypost.postId}`);
       setCommentList(response.data);
       setDataLoaded(true);
-      console.log(response.data);
     } catch (err) {
       setError(err.message);
       console.log(err.message);
@@ -125,21 +124,33 @@ const Post = ({
       <Card.Root w={{ base: "100%", lg: cardWidth }} mx="auto">
         <Collapsible.Root open={open}>
           <Card.Body>
-            <HStack mb="6" gap="3">
-              <Link to={`/users/${mypost.userId}`}>
-                <UserAvatar
-                  userName={mypost.userName}
-                  avatarId={mypost.avatarId}
-                  size="xl"
-                />
-              </Link>
+            <Flex mb="6" justify="space-between" align="flex-start" w="100%">
+              <HStack mb="6" gap="3">
+                <Link to={`/users/${mypost.userId}`}>
+                  <UserAvatar
+                    userName={mypost.userName}
+                    avatarId={mypost.avatarId}
+                    size="xl"
+                  />
+                </Link>
 
-              <Stack gap="0">
-                <Text fontWeight="semibold" textStyle="sm">
-                  {mypost.userName}
-                </Text>
-              </Stack>
-            </HStack>
+                <Stack gap="0">
+                  <Text fontWeight="semibold" textStyle="sm">
+                    {mypost.userName}
+                  </Text>
+                </Stack>
+              </HStack>
+
+              <Text fontSize="sm" color="gray.500">
+                {mypost.createdAt
+                  ? new Date(mypost.createdAt).toLocaleDateString("tr-TR", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })
+                  : "Tarih yok"}
+              </Text>
+            </Flex>
 
             <Card.Title>{mypost.title}</Card.Title>
             <Card.Description mt="3">{mypost.text}</Card.Description>
