@@ -1,11 +1,11 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: import.meta.env.VITE_BASE_API_URL,
 });
 
 const refreshApi = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: import.meta.env.VITE_BASE_API_URL,
 });
 
 // 1. REQUEST INTERCEPTOR: İstek atılmadan hemen önce çalışır
