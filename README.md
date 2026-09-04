@@ -11,20 +11,17 @@ Question Hub, kullanıcıların yorum, gönderi ve beğeni yapabildiği, sosyal 
 ### 🖥️ Web
 
 <p align="center">
-  <img src="images/home.png" width="45%" />
-  <img src="images/login.png" width="45%" />
-</p>
-
-<p align="center">
-  <img src="images/profile.png" width="45%" />
-  <img src="images/post.png" width="45%" />
+  <img src="images/login.png" width="80%" />
+  <img src="images/home.png" width="80%" />
+  <img src="images/profile.png" width="80%" />
+  <img src="images/post.png" width="80%" />
 </p>
 
 ### 📱 Mobile
 
 <p align="center">
-  <img src="images/mobile1.png" width="30%" />
-  <img src="images/mobile2.png" width="30%" />
+  <img src="images/mobile1.png" width="35%" />
+  <img src="images/mobile2.png" width="35%" />
 </p>
 
 ---
