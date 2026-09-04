@@ -6,14 +6,25 @@ Question Hub, kullanıcıların yorum, gönderi ve beğeni yapabildiği, sosyal 
 
 > ⚠️ **Not:** Ücretsiz hosting kullanıldığından dolayı uygulamanın ilk açılışında 1–2 dakikalık bir cold start süresi olabilir. Lütfen ilk yüklemede bir süre bekleyiniz. Sonraki kullanımlarda uygulama normal bir şekilde çalışacaktır.
 
+## 📸 Screenshots
+
+### 🖥️ Web
+
 <p align="center">
-  <img src="images/login.png" width="45%">
-  &nbsp;
-  <img src="images/register.png" width="45%">
-  &nbsp;
-  <img src="images/register.png" width="45%">
-  &nbsp;
-  <img src="images/register.png" width="45%">
+  <img src="images/home.png" width="45%" />
+  <img src="images/login.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="images/profile.png" width="45%" />
+  <img src="images/post.png" width="45%" />
+</p>
+
+### 📱 Mobile
+
+<p align="center">
+  <img src="images/mobile1.png" width="30%" />
+  <img src="images/mobile2.png" width="30%" />
 </p>
 
 ---
@@ -36,6 +47,7 @@ Question Hub, kullanıcıların yorum, gönderi ve beğeni yapabildiği, sosyal 
 * Gönderileri tarihe göre sıralama
 * Responsive kullanıcı arayüzü (Mobil & Web)
 * Frontend ve backend arasında REST API iletişimi
+* Global Exception Handling ile merkezi hata yönetimi
 
 ---
 
@@ -183,7 +195,7 @@ Backend, RESTful API yaklaşımı kullanılarak geliştirilmiştir.
 ## 🗄️ Database Structure
 
 <p align="center">
-  <img src="images/db.png" width="10%">
+  <img src="images/db.png" width="70%">
 </p>
 
 ---
