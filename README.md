@@ -6,7 +6,7 @@ Question Hub, kullanıcıların yorum, gönderi ve beğeni yapabildiği, sosyal 
 
 > ⚠️ **Not:** Ücretsiz hosting kullanıldığından dolayı uygulamanın ilk açılışında 1–2 dakikalık bir cold start süresi olabilir. Lütfen ilk yüklemede kısa bir süre bekleyiniz. Sonraki kullanımlarda uygulama normal bir şekilde çalışacaktır.
 
-## 📸 Screenshots
+## 📸 Screenshots (Web & Mobil)
 
 <table>
   <tr>
