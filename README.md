@@ -4,25 +4,36 @@ Question Hub, kullanıcıların yorum, gönderi ve beğeni yapabildiği, sosyal 
 
 🌐 **Live Demo:** https://question-hub-sooty.vercel.app
 
-> ⚠️ **Not:** Ücretsiz hosting kullanıldığından dolayı uygulamanın ilk açılışında 1–2 dakikalık bir cold start süresi olabilir. Lütfen ilk yüklemede bir süre bekleyiniz. Sonraki kullanımlarda uygulama normal bir şekilde çalışacaktır.
+> ⚠️ **Not:** Ücretsiz hosting kullanıldığından dolayı uygulamanın ilk açılışında 1–2 dakikalık bir cold start süresi olabilir. Lütfen ilk yüklemede kısa bir süre bekleyiniz. Sonraki kullanımlarda uygulama normal bir şekilde çalışacaktır.
 
 ## 📸 Screenshots
 
-### 🖥️ Web
-
-<p align="center">
-  <img src="images/login.png" width="80%" />
-  <img src="images/home.png" width="80%" />
-  <img src="images/profile.png" width="80%" />
-  <img src="images/post.png" width="80%" />
-</p>
-
-### 📱 Mobile
-
-<p align="center">
-  <img src="images/mobile1.png" width="35%" />
-  <img src="images/mobile2.png" width="35%" />
-</p>
+<table>
+  <tr>
+    <td width="50%"><img src="images/home.png" alt="Home Page"></td>
+    <td width="50%"><img src="images/post.png" alt="Post Details"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Home Page</b></td>
+    <td align="center"><b>Post Details & Comments</b></td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="images/profile.png" alt="User Profile"></td>
+    <td width="50%"><img src="images/login.png" alt="Login Page"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>User Profile</b></td>
+    <td align="center"><b>Login Page</b></td>
+  </tr>
+  <tr>
+    <td width="50%" align="center"><img src="images/mobile1.png" alt="User Profile" height="350"></td>
+    <td width="50%" align="center"><img src="images/mobile2.png" alt="Login Page" height="350"></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Mobil</b></td>
+    <td align="center"><b>Mobil</b></td>
+  </tr>
+</table>
 
 ---
 
